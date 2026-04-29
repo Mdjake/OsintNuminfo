@@ -77,7 +77,7 @@
   }
 
   .header::before {
-    content: '> Developer Saif DEEP SCAN INTELLIGENCE // AUTO CHAIN MODE <';
+    content: '> Developer Saif SECURITY INTELLIGENCE // TRIPLE MODE <';
     display: block;
     font-size: 10px;
     color: var(--cyan);
@@ -121,28 +121,43 @@
     font-weight: bold;
   }
 
-  .mode-indicator {
-    text-align: center;
-    margin: 15px 0;
-    padding: 8px;
-    background: rgba(255,100,0,0.2);
-    border: 1px solid #ff6600;
-    color: #ffaa44;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    animation: pulse 2s infinite;
+  .mode-switch {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
   }
 
-  .mode-indicator span {
-    color: #ffaa44;
-    font-weight: bold;
+  .mode-btn {
+    background: rgba(0,40,10,0.6);
+    border: 1px solid var(--border);
+    color: var(--green-bright);
+    padding: 10px 25px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .mode-btn.active {
+    background: var(--green);
+    color: #000;
+    border-color: var(--green);
+    box-shadow: 0 0 20px var(--green);
+  }
+
+  .mode-btn.deep-mode.active {
+    background: #ff6600;
+    color: #000;
+    border-color: #ff6600;
+    box-shadow: 0 0 20px #ff6600;
   }
 
   .stats-bar {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     margin: 20px 0;
     flex-wrap: wrap;
   }
@@ -155,13 +170,13 @@
   }
 
   .stat-number {
-    font-size: 22px;
+    font-size: 20px;
     color: var(--green-bright);
     font-family: 'Orbitron', sans-serif;
   }
 
   .stat-label {
-    font-size: 9px;
+    font-size: 8px;
     letter-spacing: 2px;
     color: var(--green-dim);
   }
@@ -201,7 +216,7 @@
   }
 
   .search-panel::before {
-    content: '⚡ DEEP SCAN ENGINE v4.0 // AUTO CHAIN MODE ⚡';
+    content: '⚡ Developer Saif INTELLIGENCE ENGINE v4.0 ⚡';
     position: absolute;
     top: -12px;
     left: 20px;
@@ -225,7 +240,7 @@
   }
 
   .input-wrapper::before {
-    content: '> DEEPSCAN@GHOST:~$ ';
+    content: '> GHOST@TERMINAL:~$ ';
     position: absolute;
     left: 14px;
     top: 50%;
@@ -243,11 +258,9 @@
     color: var(--text);
     font-family: 'Share Tech Mono', monospace;
     font-size: 14px;
-    padding: 16px 16px 16px 220px;
+    padding: 16px 16px 16px 200px;
     outline: none;
     resize: vertical;
-    min-height: 150px;
-    height: 150px;
   }
 
   textarea:focus {
@@ -255,12 +268,27 @@
     box-shadow: 0 0 25px rgba(0,255,65,0.2);
   }
 
+  .input-wrapper.single-mode textarea {
+    min-height: 60px;
+    height: 60px;
+  }
+
+  .input-wrapper.batch-mode textarea {
+    min-height: 150px;
+    height: 150px;
+  }
+
+  .input-wrapper.deep-mode textarea {
+    min-height: 120px;
+    height: 120px;
+  }
+
   .btn-scan {
-    background: linear-gradient(135deg, rgba(255,100,0,0.3), rgba(0,20,5,0.6));
-    border: 2px solid #ff6600;
-    color: #ffaa44;
+    background: linear-gradient(135deg, rgba(0,50,15,0.4), rgba(0,20,5,0.6));
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
     font-family: 'Orbitron', sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 3px;
     padding: 0 28px;
@@ -269,6 +297,12 @@
     clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
     white-space: nowrap;
     min-height: 56px;
+  }
+
+  .btn-scan.deep-scan-btn {
+    background: linear-gradient(135deg, rgba(255,100,0,0.3), rgba(0,20,5,0.6));
+    border: 2px solid #ff6600;
+    color: #ffaa44;
     animation: pulse-border 2s infinite;
   }
 
@@ -278,9 +312,13 @@
   }
 
   .btn-scan:hover:not(:disabled) {
+    background: rgba(0,100,30,0.5);
+    box-shadow: 0 0 25px var(--cyan);
+  }
+
+  .btn-scan.deep-scan-btn:hover:not(:disabled) {
     background: rgba(255,100,0,0.5);
     box-shadow: 0 0 30px #ff6600;
-    border-color: #ffaa44;
   }
 
   .btn-scan:disabled {
@@ -599,44 +637,31 @@
   
   <div class="header">
     <div class="logo">G H O S T</div>
-    <div class="subtitle">DEEP SCAN OSINT TERMINAL // AUTO CHAIN MODE</div>
+    <div class="subtitle">TRIPLE MODE OSINT TERMINAL // SINGLE + BATCH + DEEP SCAN</div>
     <div class="developer-tag">
-      ⚡ DEVELOPED BY <span>Developer Saif</span> // DEEP INTELLIGENCE ⚡
+      ⚡ DEVELOPED BY <span>Developer Saif</span> // ELITE SECURITY RESEARCHER ⚡
     </div>
-    <div class="mode-indicator">
-      🔥 MODE: <span>DEEP SCAN (AUTO CHAIN)</span> 🔥<br>
-      ➡️ Automatically follows alternate numbers | Only stops when no alternates found
+    <div class="storage-controls">
+      <button class="storage-btn" id="save-session">💾 SAVE SESSION</button>
+      <button class="storage-btn" id="load-session">📂 LOAD LAST SESSION</button>
+      <button class="storage-btn" id="clear-history">🗑️ CLEAR ALL DATA</button>
+      <button class="storage-btn" id="show-history">📜 SHOW HISTORY</button>
     </div>
-    <div class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-number" id="scan-count">0</div>
-        <div class="stat-label">NUMBERS SCANNED</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="success-rate">0%</div>
-        <div class="stat-label">SUCCESS RATE</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="chain-depth">0</div>
-        <div class="stat-label">MAX CHAIN DEPTH</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="total-records">0</div>
-        <div class="stat-label">TOTAL RECORDS</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="alternates-found">0</div>
-        <div class="stat-label">ALTERNATES FOUND</div>
-      </div>
-    </div>
+  </div>
+
+  <!-- THREE MODE SWITCH -->
+  <div class="mode-switch">
+    <button class="mode-btn" data-mode="single">🎯 SINGLE SCAN</button>
+    <button class="mode-btn" data-mode="batch">📦 BATCH SCAN (MAX 10)</button>
+    <button class="mode-btn deep-mode" data-mode="deep">🔗 DEEP SCAN (AUTO CHAIN)</button>
   </div>
 
   <div class="search-panel">
     <div class="input-row">
-      <div class="input-wrapper">
-        <textarea id="phone-input" placeholder="DEEP SCAN MODE: Enter number(s) to scan&#10;&#10;Example:&#10;+919876543210&#10;919876543211&#10;9876543212&#10;&#10;⚡ System will automatically follow all alternate numbers found&#10;⚡ Creates complete intelligence chain automatically"></textarea>
+      <div class="input-wrapper" id="input-wrapper">
+        <textarea id="phone-input" placeholder="SINGLE MODE: Enter ONE number only&#10;Example: +919876543210"></textarea>
       </div>
-      <button class="btn-scan" id="scan-btn">⚡ START DEEP CHAIN SCAN ⚡</button>
+      <button class="btn-scan" id="scan-btn">◉ EXECUTE SCAN</button>
     </div>
 
     <div class="batch-progress" id="batch-progress">
@@ -646,29 +671,52 @@
 
   <div class="history-panel" id="history-panel">
     <div class="history-header">
-      <span>📜 DEEP SCAN HISTORY</span>
+      <span>📜 SCAN HISTORY</span>
       <button class="storage-btn" id="close-history">✖ CLOSE</button>
     </div>
     <div id="history-list"></div>
   </div>
 
   <div class="export-buttons" id="export-buttons" style="display:none;">
-    <button class="export-btn" id="export-pdf">📄 EXPORT DEEP SCAN REPORT</button>
+    <button class="export-btn" id="export-pdf">📄 EXPORT PDF REPORT</button>
     <button class="export-btn" id="export-csv">📊 EXPORT CSV</button>
     <button class="export-btn" id="export-json">🔧 EXPORT JSON</button>
   </div>
 
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-number" id="scan-count">0</div>
+      <div class="stat-label">TOTAL SCANS</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="success-rate">0%</div>
+      <div class="stat-label">SUCCESS RATE</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="batch-count">0</div>
+      <div class="stat-label">BATCH RUNS</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="total-records">0</div>
+      <div class="stat-label">TOTAL RECORDS</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="chain-depth">0</div>
+      <div class="stat-label">MAX DEPTH</div>
+    </div>
+  </div>
+
   <div class="results-section" id="results-section">
     <div class="results-header">
-      <h2>◉ DEEP INTELLIGENCE CHAIN REPORT</h2>
+      <h2>◉ INTELLIGENCE REPORTS</h2>
       <span class="result-count" id="result-count">0 RECORDS</span>
     </div>
     <div id="results-container"></div>
   </div>
 
   <div class="footer">
-    ◈ DEVELOPED BY Developer Saif // DEEP SCAN AUTO CHAIN MODE ◈<br>
-    <span>⚡ AUTOMATICALLY FOLLOWS ALTERNATE NUMBERS | MAX DEPTH: UNLIMITED ⚡</span>
+    ◈ DEVELOPED BY Developer Saif // GHOST SECURITY RESEARCH // THREE MODES ACTIVE ◈<br>
+    <span>⚡ SINGLE | BATCH | DEEP SCAN (AUTO CHAIN) ⚡</span>
   </div>
 </div>
 
@@ -676,17 +724,18 @@
 // Storage Manager
 class StorageManager {
   constructor() {
-    this.storageKey = 'ghost_deepscan_data';
-    this.historyKey = 'ghost_deepscan_history';
+    this.storageKey = 'ghost_intelligence_data';
+    this.historyKey = 'ghost_scan_history';
     this.maxHistoryItems = 50;
   }
 
-  saveCurrentSession(stats, results, chainInfo) {
+  saveCurrentSession(stats, results, mode, chainInfo = null) {
     const session = {
       id: Date.now(),
       timestamp: new Date().toISOString(),
       stats: { ...stats },
       results: results,
+      mode: mode,
       chainInfo: chainInfo
     };
     
@@ -715,14 +764,18 @@ class StorageManager {
     if (session && session.stats && session.results) {
       totalScans = session.stats.totalScans || 0;
       successfulScans = session.stats.successfulScans || 0;
-      maxChainDepth = session.stats.maxChainDepth || 0;
+      batchRuns = session.stats.batchRuns || 0;
       totalRecordsFound = session.stats.totalRecordsFound || 0;
-      totalAlternatesFound = session.stats.totalAlternatesFound || 0;
+      maxChainDepth = session.stats.maxChainDepth || 0;
       updateStats();
       
       if (session.results && session.results.length > 0) {
-        currentChainResults = session.results;
-        renderChainResults(currentChainResults, session.chainInfo);
+        currentResults = session.results;
+        if (session.mode === 'deep') {
+          renderDeepResults(currentResults, session.chainInfo);
+        } else {
+          renderBatchResults(currentResults);
+        }
         document.getElementById('export-buttons').style.display = 'flex';
       }
       return true;
@@ -763,7 +816,7 @@ const storage = new StorageManager();
     if (!ctx) return;
     ctx.fillStyle = 'rgba(0,8,0,0.05)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#ff6600';
+    ctx.fillStyle = '#00cc33';
     ctx.font = fontSize + 'px Share Tech Mono';
     for (let i = 0; i < drops.length; i++) {
       const char = chars[Math.floor(Math.random() * chars.length)];
@@ -785,20 +838,84 @@ const storage = new StorageManager();
 // Statistics
 let totalScans = 0;
 let successfulScans = 0;
-let maxChainDepth = 0;
+let batchRuns = 0;
 let totalRecordsFound = 0;
-let totalAlternatesFound = 0;
-let currentChainResults = [];
+let maxChainDepth = 0;
+let currentMode = 'single';
+let currentResults = [];
 let scannedNumbers = new Set();
 
 function updateStats() {
   document.getElementById('scan-count').textContent = totalScans;
   const successRate = totalScans > 0 ? Math.round((successfulScans / totalScans) * 100) : 0;
   document.getElementById('success-rate').textContent = `${successRate}%`;
-  document.getElementById('chain-depth').textContent = maxChainDepth;
+  document.getElementById('batch-count').textContent = batchRuns;
   document.getElementById('total-records').textContent = totalRecordsFound;
-  document.getElementById('alternates-found').textContent = totalAlternatesFound;
+  document.getElementById('chain-depth').textContent = maxChainDepth;
 }
+
+// Mode switching
+const inputWrapper = document.getElementById('input-wrapper');
+const phoneInput = document.getElementById('phone-input');
+const scanBtn = document.getElementById('scan-btn');
+
+function setMode(mode) {
+  currentMode = mode;
+  
+  // Update active button
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.mode === mode) {
+      btn.classList.add('active');
+      if (mode === 'deep') {
+        btn.classList.add('deep-mode');
+      }
+    }
+  });
+  
+  // Update input area and button based on mode
+  inputWrapper.classList.remove('single-mode', 'batch-mode', 'deep-mode');
+  inputWrapper.classList.add(`${mode}-mode`);
+  
+  if (mode === 'single') {
+    phoneInput.placeholder = "SINGLE MODE: Enter ONE number only\nExample: +919876543210";
+    phoneInput.value = phoneInput.value.split('\n')[0];
+    scanBtn.classList.remove('deep-scan-btn');
+    scanBtn.textContent = '◉ EXECUTE SINGLE SCAN';
+  } else if (mode === 'batch') {
+    phoneInput.placeholder = "BATCH MODE: Enter one number per line (max 10)\n+919876543210\n919876543211\n9876543212";
+    scanBtn.classList.remove('deep-scan-btn');
+    scanBtn.textContent = '◉ EXECUTE BATCH SCAN';
+  } else if (mode === 'deep') {
+    phoneInput.placeholder = "DEEP SCAN MODE: Enter number(s) to scan\nSystem will automatically follow all alternate numbers\n\nExample:\n+919876543210\n919876543211";
+    scanBtn.classList.add('deep-scan-btn');
+    scanBtn.textContent = '🔗 EXECUTE DEEP CHAIN SCAN';
+  }
+}
+
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setMode(btn.dataset.mode);
+  });
+});
+
+// Enter key handler for single mode
+phoneInput.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter' && currentMode === 'single') {
+    e.preventDefault();
+    startScan();
+  }
+});
+
+// Prevent multiple lines in single mode
+phoneInput.addEventListener('input', function(e) {
+  if (currentMode === 'single') {
+    const lines = this.value.split('\n');
+    if (lines.length > 1) {
+      this.value = lines[0];
+    }
+  }
+});
 
 function sanitizePhoneNumber(input) {
   let cleaned = input.replace(/\D/g, '');
@@ -812,16 +929,22 @@ function sanitizePhoneNumber(input) {
 }
 
 function getNumbersFromInput() {
-  const rawInput = document.getElementById('phone-input').value;
-  const lines = rawInput.split('\n');
-  const numbers = [];
-  for (let line of lines) {
-    const num = sanitizePhoneNumber(line);
-    if (num && numbers.length < 10) {
-      numbers.push(num);
+  const rawInput = phoneInput.value;
+  if (currentMode === 'single') {
+    const firstLine = rawInput.split('\n')[0].trim();
+    const num = sanitizePhoneNumber(firstLine);
+    return num ? [num] : [];
+  } else {
+    const lines = rawInput.split('\n');
+    const numbers = [];
+    for (let line of lines) {
+      const num = sanitizePhoneNumber(line);
+      if (num && numbers.length < 10) {
+        numbers.push(num);
+      }
     }
+    return numbers;
   }
-  return numbers;
 }
 
 async function scanNumber(number) {
@@ -916,7 +1039,6 @@ function removeDuplicateRecords(records) {
 
 async function deepChainScan(initialNumbers, progressLog) {
   const queue = [...initialNumbers];
-  const allResults = [];
   const resultsMap = new Map();
   let currentDepth = 0;
   let alternatesDiscovered = 0;
@@ -949,8 +1071,6 @@ async function deepChainScan(initialNumbers, progressLog) {
       
       if (alternates.length > 0) {
         alternatesDiscovered += alternates.length;
-        totalAlternatesFound = alternatesDiscovered;
-        updateStats();
         
         logLine.innerHTML = `✅ [Depth ${currentNumberDepth}] +91 ${number} - Found ${result.recordCount} record(s) + ${alternates.length} alternate(s)`;
         
@@ -983,6 +1103,7 @@ async function deepChainScan(initialNumbers, progressLog) {
     await new Promise(resolve => setTimeout(resolve, 500));
   }
   
+  const allResults = [];
   for (let [number, result] of resultsMap) {
     if (result.allRecords) {
       allResults.push(result);
@@ -992,18 +1113,21 @@ async function deepChainScan(initialNumbers, progressLog) {
   return { allResults, alternatesDiscovered };
 }
 
-async function startDeepScan() {
+// Normal Batch/Scan function
+async function startNormalScan() {
   const numbers = getNumbersFromInput();
   
   if (numbers.length === 0) {
-    alert('❌ ERROR: No valid numbers found. Please enter at least one valid 10-digit number.');
+    alert('❌ ERROR: No valid numbers found.');
     return;
   }
   
-  scannedNumbers.clear();
-  maxChainDepth = 0;
-  totalRecordsFound = 0;
-  totalAlternatesFound = 0;
+  if (currentMode === 'batch' && numbers.length > 10) {
+    alert('❌ ERROR: Maximum 10 numbers allowed in batch mode.');
+    return;
+  }
+  
+  batchRuns++;
   updateStats();
   
   const btn = document.getElementById('scan-btn');
@@ -1012,7 +1136,74 @@ async function startDeepScan() {
   const exportBtns = document.getElementById('export-buttons');
   
   btn.disabled = true;
-  btn.textContent = '⚡ DEEP CHAIN SCANNING... ⚡';
+  btn.textContent = '⚡ SCANNING...';
+  progressDiv.classList.add('active');
+  progressLog.innerHTML = '';
+  exportBtns.style.display = 'none';
+  document.getElementById('results-section').classList.remove('visible');
+  
+  currentResults = [];
+  
+  for (let i = 0; i < numbers.length; i++) {
+    const logLine = document.createElement('div');
+    logLine.className = 'progress-item';
+    logLine.innerHTML = `[${i+1}/${numbers.length}] 🔍 Scanning +91 ${numbers[i]}...`;
+    progressLog.appendChild(logLine);
+    
+    const result = await scanNumber(numbers[i]);
+    
+    if (result.success) {
+      const uniqueRecords = removeDuplicateRecords(result.allRecords);
+      result.allRecords = uniqueRecords;
+      result.recordCount = uniqueRecords.length;
+      result.depth = 0;
+      
+      logLine.className = 'progress-item success';
+      logLine.innerHTML = `[${i+1}/${numbers.length}] ✅ SUCCESS: +91 ${numbers[i]} - Found ${result.recordCount} record(s)`;
+      currentResults.push(result);
+      totalRecordsFound += result.recordCount;
+      updateStats();
+    } else {
+      logLine.className = 'progress-item error';
+      logLine.innerHTML = `[${i+1}/${numbers.length}] ❌ FAILED: +91 ${numbers[i]} - ${result.error}`;
+    }
+    
+    progressLog.scrollTop = progressLog.scrollHeight;
+    if (i < numbers.length - 1) await new Promise(resolve => setTimeout(resolve, 600));
+  }
+  
+  btn.disabled = false;
+  btn.textContent = currentMode === 'single' ? '◉ EXECUTE SINGLE SCAN' : '◉ EXECUTE BATCH SCAN';
+  
+  if (currentResults.length > 0) {
+    renderBatchResults(currentResults);
+    exportBtns.style.display = 'flex';
+  } else {
+    alert('❌ No successful scans.');
+  }
+}
+
+// Deep Scan function
+async function startDeepScan() {
+  const numbers = getNumbersFromInput();
+  
+  if (numbers.length === 0) {
+    alert('❌ ERROR: No valid numbers found.');
+    return;
+  }
+  
+  scannedNumbers.clear();
+  maxChainDepth = 0;
+  totalRecordsFound = 0;
+  updateStats();
+  
+  const btn = document.getElementById('scan-btn');
+  const progressDiv = document.getElementById('batch-progress');
+  const progressLog = document.getElementById('progress-log');
+  const exportBtns = document.getElementById('export-buttons');
+  
+  btn.disabled = true;
+  btn.textContent = '🔗 DEEP CHAIN SCANNING...';
   progressDiv.classList.add('active');
   progressLog.innerHTML = '';
   exportBtns.style.display = 'none';
@@ -1024,19 +1215,13 @@ async function startDeepScan() {
   startLine.innerHTML = `🚀 STARTING DEEP CHAIN SCAN ON ${numbers.length} NUMBER(S)`;
   progressLog.appendChild(startLine);
   
-  const initLine = document.createElement('div');
-  initLine.className = 'progress-item';
-  initLine.style.marginLeft = '20px';
-  initLine.innerHTML = `📱 Target numbers: ${numbers.map(n => `+91 ${n}`).join(', ')}`;
-  progressLog.appendChild(initLine);
-  
   const { allResults, alternatesDiscovered } = await deepChainScan(numbers, progressLog);
   
   btn.disabled = false;
-  btn.textContent = '⚡ START DEEP CHAIN SCAN ⚡';
+  btn.textContent = '🔗 EXECUTE DEEP CHAIN SCAN';
   
   if (allResults.length > 0) {
-    currentChainResults = allResults;
+    currentResults = allResults;
     const chainInfo = {
       initialNumbers: numbers,
       totalScanned: allResults.length,
@@ -1044,7 +1229,7 @@ async function startDeepScan() {
       maxDepth: maxChainDepth,
       totalRecords: totalRecordsFound
     };
-    renderChainResults(allResults, chainInfo);
+    renderDeepResults(allResults, chainInfo);
     exportBtns.style.display = 'flex';
     
     const summaryLine = document.createElement('div');
@@ -1054,7 +1239,16 @@ async function startDeepScan() {
     summaryLine.innerHTML = `🎉 DEEP SCAN COMPLETE! Scanned ${allResults.length} numbers | Found ${totalRecordsFound} records | ${alternatesDiscovered} alternates discovered | Max depth: ${maxChainDepth}`;
     progressLog.appendChild(summaryLine);
   } else {
-    alert('❌ No successful scans. Please verify numbers and try again.');
+    alert('❌ No successful scans.');
+  }
+}
+
+// Main scan dispatcher
+async function startScan() {
+  if (currentMode === 'deep') {
+    await startDeepScan();
+  } else {
+    await startNormalScan();
   }
 }
 
@@ -1063,7 +1257,65 @@ function getGoogleMapsLink(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-function renderChainResults(results, chainInfo) {
+function renderBatchResults(results) {
+  const container = document.getElementById('results-container');
+  const section = document.getElementById('results-section');
+  const countEl = document.getElementById('result-count');
+  
+  container.innerHTML = '';
+  countEl.textContent = `${totalRecordsFound} RECORD${totalRecordsFound !== 1 ? 'S' : ''}`;
+  
+  results.forEach((result, idx) => {
+    const allRecords = result.allRecords;
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="card-title">🎯 TARGET #${idx+1}: +91 ${result.number}</div>
+        <div class="card-badge">${result.recordCount} RECORD${result.recordCount !== 1 ? 'S' : ''}</div>
+      </div>
+    `;
+    
+    allRecords.forEach((rec, recIdx) => {
+      const subRecord = document.createElement('div');
+      subRecord.className = 'sub-record';
+      subRecord.innerHTML = `
+        <div class="sub-record-header">${result.recordCount > 1 ? `📋 RECORD #${recIdx + 1} of ${result.recordCount}` : '📋 INTELLIGENCE DATA'}</div>
+        <div class="field-grid">
+          ${rec.mobile ? `<div class="field-item"><div class="field-key">📱 MOBILE NUMBER</div><div class="field-value">${rec.mobile}</div></div>` : ''}
+          ${rec.name ? `<div class="field-item"><div class="field-key">👤 FULL NAME</div><div class="field-value">${rec.name}</div></div>` : ''}
+          ${rec.fname ? `<div class="field-item"><div class="field-key">👨 FATHER'S NAME</div><div class="field-value">${rec.fname}</div></div>` : ''}
+          ${rec.address ? `<div class="field-item"><div class="field-key">📍 ADDRESS</div><div class="field-value">${rec.address}</div></div>` : ''}
+          ${rec.alt ? `<div class="field-item"><div class="field-key">📞 ALTERNATE NUMBER</div><div class="field-value">${rec.alt}</div></div>` : ''}
+          ${rec.circle ? `<div class="field-item"><div class="field-key">📡 OPERATOR</div><div class="field-value">${rec.circle}</div></div>` : ''}
+        </div>
+        ${rec.address ? `
+          <div class="map-preview">
+            <div class="field-key">🗺️ GEOLOCATION INTELLIGENCE</div>
+            <div class="field-value">Location: ${rec.address}</div>
+            <a href="${getGoogleMapsLink(rec.address)}" target="_blank" class="map-link">📍 OPEN IN GOOGLE MAPS →</a>
+          </div>
+        ` : ''}
+      `;
+      card.appendChild(subRecord);
+    });
+    
+    const timestamp = document.createElement('div');
+    timestamp.style.marginTop = '16px';
+    timestamp.style.fontSize = '9px';
+    timestamp.style.color = '#448844';
+    timestamp.style.textAlign = 'right';
+    timestamp.innerHTML = `🕒 ${new Date(result.timestamp).toLocaleString()} | 🔐 Developer Saif`;
+    card.appendChild(timestamp);
+    
+    container.appendChild(card);
+  });
+  
+  section.classList.add('visible');
+}
+
+function renderDeepResults(results, chainInfo) {
   const container = document.getElementById('results-container');
   const section = document.getElementById('results-section');
   const countEl = document.getElementById('result-count');
@@ -1071,7 +1323,6 @@ function renderChainResults(results, chainInfo) {
   container.innerHTML = '';
   countEl.textContent = `${totalRecordsFound} UNIQUE RECORD${totalRecordsFound !== 1 ? 'S' : ''}`;
   
-  // Chain summary
   const summaryDiv = document.createElement('div');
   summaryDiv.className = 'chain-summary';
   summaryDiv.innerHTML = `
@@ -1148,8 +1399,8 @@ async function generatePDF() {
   let yPos = 25;
   
   doc.setFontSize(20);
-  doc.setTextColor(255, 100, 0);
-  doc.text('GHOST DEEP SCAN INTELLIGENCE REPORT', 20, yPos);
+  doc.setTextColor(0, 100, 0);
+  doc.text('GHOST SECURITY INTELLIGENCE REPORT', 20, yPos);
   yPos += 10;
   
   doc.setFontSize(10);
@@ -1158,20 +1409,16 @@ async function generatePDF() {
   yPos += 6;
   doc.text(`Date: ${new Date().toLocaleString()}`, 20, yPos);
   yPos += 6;
-  doc.text(`Total Numbers Scanned: ${totalScans}`, 20, yPos);
+  doc.text(`Mode: ${currentMode.toUpperCase()}`, 20, yPos);
   yPos += 6;
-  doc.text(`Total Unique Records: ${totalRecordsFound}`, 20, yPos);
-  yPos += 6;
-  doc.text(`Alternates Discovered: ${totalAlternatesFound}`, 20, yPos);
-  yPos += 6;
-  doc.text(`Max Chain Depth: ${maxChainDepth}`, 20, yPos);
+  doc.text(`Total Records: ${totalRecordsFound}`, 20, yPos);
   yPos += 15;
   
-  doc.setDrawColor(255, 100, 0);
+  doc.setDrawColor(0, 100, 0);
   doc.line(20, yPos, 190, yPos);
   yPos += 10;
   
-  for (const result of currentChainResults) {
+  for (const result of currentResults) {
     for (let i = 0; i < result.allRecords.length; i++) {
       const rec = result.allRecords[i];
       
@@ -1181,8 +1428,8 @@ async function generatePDF() {
       }
       
       doc.setFontSize(12);
-      doc.setTextColor(255, 100, 0);
-      doc.text(`TARGET: +91 ${result.number} ${result.depth > 0 ? `[Depth: ${result.depth}]` : '[Original]'}`, 20, yPos);
+      doc.setTextColor(0, 100, 0);
+      doc.text(`TARGET: +91 ${result.number}`, 20, yPos);
       yPos += 7;
       
       doc.setFontSize(10);
@@ -1201,20 +1448,20 @@ async function generatePDF() {
     }
   }
   
-  doc.save(`DEEPSCAN_REPORT_${Date.now()}.pdf`);
+  doc.save(`GHOST_REPORT_${Date.now()}.pdf`);
 }
 
 function exportCSV() {
-  let csv = "Target Number,Depth,Name,Father's Name,Address,Alternate Number,Operator\n";
-  currentChainResults.forEach(result => {
+  let csv = "Target Number,Name,Father's Name,Address,Alternate Number,Operator\n";
+  currentResults.forEach(result => {
     result.allRecords.forEach(rec => {
-      csv += `+91 ${result.number},${result.depth || 0},"${rec.name || ''}","${rec.fname || ''}","${(rec.address || '').replace(/"/g, '""')}","${rec.alt || ''}","${rec.circle || ''}"\n`;
+      csv += `+91 ${result.number},"${rec.name || ''}","${rec.fname || ''}","${(rec.address || '').replace(/"/g, '""')}","${rec.alt || ''}","${rec.circle || ''}"\n`;
     });
   });
   const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = `DEEPSCAN_DATA_${Date.now()}.csv`;
+  link.download = `GHOST_DATA_${Date.now()}.csv`;
   link.click();
   URL.revokeObjectURL(link.href);
 }
@@ -1223,39 +1470,42 @@ function exportJSON() {
   const data = {
     generated_by: "Developer Saif",
     timestamp: new Date().toISOString(),
+    mode: currentMode,
     statistics: {
       total_scans: totalScans,
       successful_scans: successfulScans,
-      max_chain_depth: maxChainDepth,
       total_records: totalRecordsFound,
-      alternates_found: totalAlternatesFound
+      batch_runs: batchRuns
     },
-    results: currentChainResults
+    results: currentResults
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = `DEEPSCAN_JSON_${Date.now()}.json`;
+  link.download = `GHOST_JSON_${Date.now()}.json`;
   link.click();
   URL.revokeObjectURL(link.href);
 }
 
 // Event Listeners
-document.getElementById('scan-btn').addEventListener('click', startDeepScan);
+document.getElementById('scan-btn').addEventListener('click', startScan);
 document.getElementById('export-pdf').addEventListener('click', generatePDF);
 document.getElementById('export-csv').addEventListener('click', exportCSV);
 document.getElementById('export-json').addEventListener('click', exportJSON);
 document.getElementById('save-session').addEventListener('click', () => {
-  const stats = { totalScans, successfulScans, maxChainDepth, totalRecordsFound, totalAlternatesFound };
-  const chainInfo = {
-    initialNumbers: getNumbersFromInput(),
-    totalScanned: currentChainResults.length,
-    alternatesFound: totalAlternatesFound,
-    maxDepth: maxChainDepth,
-    totalRecords: totalRecordsFound
-  };
-  storage.saveCurrentSession(stats, currentChainResults, chainInfo);
-  alert('✅ Deep scan session saved!');
+  const stats = { totalScans, successfulScans, batchRuns, totalRecordsFound, maxChainDepth };
+  let chainInfo = null;
+  if (currentMode === 'deep' && currentResults.length > 0) {
+    chainInfo = {
+      initialNumbers: getNumbersFromInput(),
+      totalScanned: currentResults.length,
+      alternatesFound: totalAlternatesFound || 0,
+      maxDepth: maxChainDepth,
+      totalRecords: totalRecordsFound
+    };
+  }
+  storage.saveCurrentSession(stats, currentResults, currentMode, chainInfo);
+  alert('✅ Session saved!');
 });
 document.getElementById('load-session').addEventListener('click', () => {
   const session = storage.getLastSession();
@@ -1265,13 +1515,13 @@ document.getElementById('load-session').addEventListener('click', () => {
 document.getElementById('clear-history').addEventListener('click', () => {
   if (confirm('Clear all data?')) {
     storage.clearAllData();
-    totalScans = successfulScans = maxChainDepth = totalRecordsFound = totalAlternatesFound = 0;
-    currentChainResults = [];
+    totalScans = successfulScans = batchRuns = totalRecordsFound = maxChainDepth = 0;
+    currentResults = [];
     scannedNumbers.clear();
     updateStats();
     document.getElementById('results-section').classList.remove('visible');
     document.getElementById('export-buttons').style.display = 'none';
-    alert('✅ All data cleared!');
+    alert('✅ Data cleared!');
   }
 });
 document.getElementById('show-history').addEventListener('click', () => {
@@ -1283,7 +1533,7 @@ document.getElementById('show-history').addEventListener('click', () => {
     list.innerHTML = history.map(s => `
       <div class="history-item" data-id="${s.id}">
         <div><strong>📅 ${new Date(s.timestamp).toLocaleString()}</strong></div>
-        <div>🎯 Targets: ${s.results.length} | 📊 Depth: ${s.stats.maxChainDepth} | 🔗 Alternates: ${s.stats.totalAlternatesFound}</div>
+        <div>🎯 Mode: ${s.mode.toUpperCase()} | 📊 Records: ${s.stats.totalRecordsFound} | 🔗 Depth: ${s.stats.maxChainDepth || 0}</div>
       </div>
     `).join('');
     document.querySelectorAll('.history-item').forEach(item => {
@@ -1300,20 +1550,22 @@ document.getElementById('close-history').addEventListener('click', () => {
   document.getElementById('history-panel').classList.remove('visible');
 });
 
+// Initialize single mode
+setMode('single');
+
 // Auto-load last session
 window.addEventListener('load', () => {
   const last = storage.getLastSession();
   if (last && last.results?.length) {
-    if (confirm('Load last deep scan session?')) {
+    if (confirm('Load last session?')) {
       storage.loadSession(last);
     }
   }
   updateStats();
 });
 
-console.log('%c🔥 DEEP SCAN MODE ACTIVE | Developer Saif 🔥', 'color: #ff6600; font-size: 14px; font-weight: bold;');
-console.log('%c🔗 AUTO CHAIN MODE: Automatically follows all alternate numbers found', 'color: #ffaa44; font-size: 12px;');
-console.log('%c⚡ Falls back to normal scan only when no alternates exist', 'color: #44ff88; font-size: 12px;');
+console.log('%c🔥 GHOST TRIPLE MODE | Developer Saif 🔥', 'color: #44ff88; font-size: 14px;');
+console.log('%c📌 MODES: SINGLE | BATCH | DEEP SCAN (Auto Chain)', 'color: #33ddff; font-size: 12px;');
 </script>
 </body>
 </html>
