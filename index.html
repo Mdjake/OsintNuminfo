@@ -259,13 +259,11 @@
     box-shadow: 0 0 25px rgba(0,255,65,0.2);
   }
 
-  /* Single mode styles */
   .input-wrapper.single-mode textarea {
     min-height: 60px;
     height: 60px;
   }
 
-  /* Batch mode styles */
   .input-wrapper.batch-mode textarea {
     min-height: 150px;
     height: 150px;
@@ -509,6 +507,17 @@
     font-weight: 500;
   }
 
+  .duplicate-warning {
+    background: rgba(255,100,0,0.15);
+    border: 1px solid #ff6600;
+    padding: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ffaa44;
+    font-size: 12px;
+    animation: fadeIn 0.5s;
+  }
+
   .footer {
     text-align: center;
     padding: 40px 0 20px;
@@ -593,7 +602,7 @@
       </div>
       <div class="stat-card">
         <div class="stat-number" id="total-records">0</div>
-        <div class="stat-label">TOTAL RECORDS</div>
+        <div class="stat-label">UNIQUE RECORDS</div>
       </div>
     </div>
   </div>
@@ -632,15 +641,15 @@
 
   <div class="results-section" id="results-section">
     <div class="results-header">
-      <h2>◉ INTELLIGENCE REPORTS // Developer Saif SECURITY DIVISION</h2>
+      <h2>◉ INTELLIGENCE REPORTS // DUPLICATE FILTERED</h2>
       <span class="result-count" id="result-count">0 RECORDS</span>
     </div>
     <div id="results-container"></div>
   </div>
 
   <div class="footer">
-    ◈ DEVELOPED BY Developer Saif // GHOST SECURITY RESEARCH // PERSISTENT STORAGE ACTIVE ◈<br>
-    <span>⚡ ULTIMATE PROTOCOL ACTIVE // DATA PERSISTENCE ENABLED ⚡</span>
+    ◈ DEVELOPED BY Developer Saif // GHOST SECURITY RESEARCH // AUTO DUPLICATE REMOVAL ◈<br>
+    <span>⚡ ULTIMATE PROTOCOL ACTIVE // UNIQUE DATA ONLY ⚡</span>
   </div>
 </div>
 
@@ -688,7 +697,7 @@ class StorageManager {
       totalScans = session.stats.totalScans || 0;
       successfulScans = session.stats.successfulScans || 0;
       batchRuns = session.stats.batchRuns || 0;
-      totalRecordsFound = session.stats.totalRecordsFound || 0;
+      totalUniqueRecords = session.stats.totalUniqueRecords || 0;
       updateStats();
       
       if (session.results && session.results.length > 0) {
@@ -757,7 +766,7 @@ const storage = new StorageManager();
 let totalScans = 0;
 let successfulScans = 0;
 let batchRuns = 0;
-let totalRecordsFound = 0;
+let totalUniqueRecords = 0;
 let currentMode = 'single';
 let currentBatchResults = [];
 
@@ -766,10 +775,53 @@ function updateStats() {
   const successRate = totalScans > 0 ? Math.round((successfulScans / totalScans) * 100) : 0;
   document.getElementById('success-rate').textContent = `${successRate}%`;
   document.getElementById('batch-count').textContent = batchRuns;
-  document.getElementById('total-records').textContent = totalRecordsFound;
+  document.getElementById('total-records').textContent = totalUniqueRecords;
 }
 
-// Mode switching with input box resizing
+// Remove duplicate records function
+function removeDuplicateRecords(results) {
+  let totalDuplicatesRemoved = 0;
+  
+  const uniqueResults = results.map(target => {
+    const uniqueRecords = [];
+    const seen = new Set();
+    
+    target.allRecords.forEach(record => {
+      // Create unique key based on name, address, mobile, fname
+      const name = (record.name || '').trim().toLowerCase();
+      const fname = (record.fname || '').trim().toLowerCase();
+      const address = (record.address || '').trim().toLowerCase();
+      const mobile = (record.mobile || '').trim();
+      
+      const key = `${name}|${fname}|${address}|${mobile}`;
+      
+      if (!seen.has(key) && key !== '||||') {
+        seen.add(key);
+        uniqueRecords.push(record);
+      } else if (key !== '||||') {
+        totalDuplicatesRemoved++;
+      }
+    });
+    
+    const newRecordCount = uniqueRecords.length;
+    const removedCount = target.recordCount - newRecordCount;
+    
+    if (removedCount > 0) {
+      console.log(`🗑️ Removed ${removedCount} duplicate(s) for +91 ${target.number}`);
+    }
+    
+    return {
+      ...target,
+      allRecords: uniqueRecords,
+      recordCount: newRecordCount,
+      duplicatesRemoved: removedCount
+    };
+  }).filter(target => target.recordCount > 0);
+  
+  return { uniqueResults, totalDuplicatesRemoved };
+}
+
+// Mode switching
 const inputWrapper = document.getElementById('input-wrapper');
 const phoneInput = document.getElementById('phone-input');
 
@@ -779,7 +831,6 @@ function setMode(mode) {
     inputWrapper.classList.remove('batch-mode');
     inputWrapper.classList.add('single-mode');
     phoneInput.placeholder = "SINGLE MODE: Enter ONE number only\nExample: +919876543210";
-    // Clear multiple lines if any
     phoneInput.value = phoneInput.value.split('\n')[0];
   } else {
     inputWrapper.classList.remove('single-mode');
@@ -796,7 +847,7 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
   });
 });
 
-// Enter key handler for single mode
+// Enter key handler
 phoneInput.addEventListener('keypress', function(e) {
   if (e.key === 'Enter' && currentMode === 'single') {
     e.preventDefault();
@@ -853,30 +904,34 @@ async function scanNumber(number) {
     totalScans++;
     
     if (data && data.api_response && data.api_response.success && data.api_response.result) {
-      const records = data.api_response.result;
-      const recordCount = Array.isArray(records) ? records.length : 1;
+      let records = data.api_response.result;
+      const originalCount = Array.isArray(records) ? records.length : 1;
+      
+      if (!Array.isArray(records)) records = [records];
+      
       successfulScans++;
-      totalRecordsFound += recordCount;
       updateStats();
       return { 
         success: true, 
         number: number, 
         timestamp: new Date().toISOString(),
-        recordCount: recordCount,
+        recordCount: originalCount,
         allRecords: records
       };
     } 
     else if (data && data.success && data.result) {
-      const records = data.result;
-      const recordCount = Array.isArray(records) ? records.length : 1;
+      let records = data.result;
+      const originalCount = Array.isArray(records) ? records.length : 1;
+      
+      if (!Array.isArray(records)) records = [records];
+      
       successfulScans++;
-      totalRecordsFound += recordCount;
       updateStats();
       return { 
         success: true, 
         number: number, 
         timestamp: new Date().toISOString(),
-        recordCount: recordCount,
+        recordCount: originalCount,
         allRecords: records
       };
     } 
@@ -943,7 +998,7 @@ async function startBatchScan() {
     
     if (result.success) {
       logLine.className = 'progress-item success';
-      logLine.innerHTML = `[${i+1}/${numbers.length}] ✅ SUCCESS: +91 ${numbers[i]} - Found ${result.recordCount} record(s)`;
+      logLine.innerHTML = `[${i+1}/${numbers.length}] ✅ SUCCESS: +91 ${numbers[i]} - Found ${result.recordCount} raw record(s)`;
       currentBatchResults.push(result);
     } else {
       logLine.className = 'progress-item error';
@@ -971,23 +1026,40 @@ function getGoogleMapsLink(address) {
 }
 
 function renderBatchResults(results) {
+  // Remove duplicates
+  const { uniqueResults, totalDuplicatesRemoved } = removeDuplicateRecords(results);
+  
+  // Update total unique records count
+  totalUniqueRecords = uniqueResults.reduce((sum, r) => sum + r.recordCount, 0);
+  updateStats();
+  
   const container = document.getElementById('results-container');
   const section = document.getElementById('results-section');
   const countEl = document.getElementById('result-count');
   
   container.innerHTML = '';
-  const totalRecords = results.reduce((sum, r) => sum + r.recordCount, 0);
-  countEl.textContent = `${totalRecords} RECORD${totalRecords !== 1 ? 'S' : ''}`;
+  const totalRecords = uniqueResults.reduce((sum, r) => sum + r.recordCount, 0);
+  countEl.textContent = `${totalRecords} UNIQUE RECORD${totalRecords !== 1 ? 'S' : ''}`;
   
-  results.forEach((result, idx) => {
+  // Show duplicate warning if any were removed
+  if (totalDuplicatesRemoved > 0) {
+    const dupWarning = document.createElement('div');
+    dupWarning.className = 'duplicate-warning';
+    dupWarning.innerHTML = `⚠️ ${totalDuplicatesRemoved} DUPLICATE RECORD(S) AUTOMATICALLY REMOVED | Showing only unique intelligence data`;
+    container.appendChild(dupWarning);
+  }
+  
+  uniqueResults.forEach((result, idx) => {
     const allRecords = result.allRecords;
     const card = document.createElement('div');
     card.className = 'result-card';
     
+    const removedText = result.duplicatesRemoved > 0 ? ` | ${result.duplicatesRemoved} duplicate(s) filtered` : '';
+    
     card.innerHTML = `
       <div class="card-header">
         <div class="card-title">🎯 TARGET #${idx+1}: +91 ${result.number}</div>
-        <div class="card-badge">${result.recordCount} RECORD${result.recordCount !== 1 ? 'S' : ''}</div>
+        <div class="card-badge">${result.recordCount} UNIQUE RECORD${result.recordCount !== 1 ? 'S' : ''}${removedText}</div>
       </div>
     `;
     
@@ -995,7 +1067,7 @@ function renderBatchResults(results) {
       const subRecord = document.createElement('div');
       subRecord.className = 'sub-record';
       subRecord.innerHTML = `
-        <div class="sub-record-header">${result.recordCount > 1 ? `📋 RECORD #${recIdx + 1} of ${result.recordCount}` : '📋 INTELLIGENCE DATA'}</div>
+        <div class="sub-record-header">${result.recordCount > 1 ? `📋 UNIQUE RECORD #${recIdx + 1} of ${result.recordCount}` : '📋 UNIQUE INTELLIGENCE DATA'}</div>
         <div class="field-grid">
           ${rec.mobile ? `<div class="field-item"><div class="field-key">📱 MOBILE NUMBER</div><div class="field-value">${rec.mobile}</div></div>` : ''}
           ${rec.name ? `<div class="field-item"><div class="field-key">👤 FULL NAME</div><div class="field-value">${rec.name}</div></div>` : ''}
@@ -1020,7 +1092,7 @@ function renderBatchResults(results) {
     timestamp.style.fontSize = '9px';
     timestamp.style.color = '#448844';
     timestamp.style.textAlign = 'right';
-    timestamp.innerHTML = `🕒 ${new Date(result.timestamp).toLocaleString()} | 🔐 Developer Saif`;
+    timestamp.innerHTML = `🕒 ${new Date(result.timestamp).toLocaleString()} | 🔐 Developer Saif | ✅ Duplicates filtered`;
     card.appendChild(timestamp);
     
     container.appendChild(card);
@@ -1046,8 +1118,7 @@ async function generatePDF() {
   yPos += 6;
   doc.text(`Date: ${new Date().toLocaleString()}`, 20, yPos);
   yPos += 6;
-  const totalRecords = currentBatchResults.reduce((sum, r) => sum + r.recordCount, 0);
-  doc.text(`Total Records: ${totalRecords}`, 20, yPos);
+  doc.text(`Total Unique Records: ${totalUniqueRecords}`, 20, yPos);
   yPos += 15;
   
   doc.setDrawColor(0, 100, 0);
@@ -1055,8 +1126,14 @@ async function generatePDF() {
   yPos += 10;
   
   for (const result of currentBatchResults) {
-    for (let i = 0; i < result.allRecords.length; i++) {
-      const rec = result.allRecords[i];
+    // Use unique records for PDF too
+    const { uniqueResults } = removeDuplicateRecords([result]);
+    if (uniqueResults.length === 0) continue;
+    
+    const uniqueResult = uniqueResults[0];
+    
+    for (let i = 0; i < uniqueResult.allRecords.length; i++) {
+      const rec = uniqueResult.allRecords[i];
       
       if (yPos > 260) {
         doc.addPage();
@@ -1065,7 +1142,7 @@ async function generatePDF() {
       
       doc.setFontSize(12);
       doc.setTextColor(0, 100, 0);
-      doc.text(`TARGET: +91 ${result.number}`, 20, yPos);
+      doc.text(`TARGET: +91 ${uniqueResult.number}`, 20, yPos);
       yPos += 7;
       
       doc.setFontSize(10);
@@ -1089,11 +1166,14 @@ async function generatePDF() {
 
 function exportCSV() {
   let csv = "Target Number,Name,Father's Name,Address,Alternate Number,Operator\n";
-  currentBatchResults.forEach(result => {
-    result.allRecords.forEach(rec => {
+  for (const result of currentBatchResults) {
+    const { uniqueResults } = removeDuplicateRecords([result]);
+    if (uniqueResults.length === 0) continue;
+    
+    uniqueResults[0].allRecords.forEach(rec => {
       csv += `+91 ${result.number},"${rec.name || ''}","${rec.fname || ''}","${(rec.address || '').replace(/"/g, '""')}","${rec.alt || ''}","${rec.circle || ''}"\n`;
     });
-  });
+  }
   const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
@@ -1103,10 +1183,14 @@ function exportCSV() {
 }
 
 function exportJSON() {
+  // Export unique records only
+  const { uniqueResults } = removeDuplicateRecords(currentBatchResults);
   const data = {
     generated_by: "Developer Saif",
     timestamp: new Date().toISOString(),
-    results: currentBatchResults
+    total_unique_records: totalUniqueRecords,
+    duplicates_filtered: true,
+    results: uniqueResults
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const link = document.createElement('a');
@@ -1122,9 +1206,10 @@ document.getElementById('export-pdf').addEventListener('click', generatePDF);
 document.getElementById('export-csv').addEventListener('click', exportCSV);
 document.getElementById('export-json').addEventListener('click', exportJSON);
 document.getElementById('save-session').addEventListener('click', () => {
-  const stats = { totalScans, successfulScans, batchRuns, totalRecordsFound };
-  storage.saveCurrentSession(stats, currentBatchResults);
-  alert('✅ Session saved!');
+  const { uniqueResults } = removeDuplicateRecords(currentBatchResults);
+  const stats = { totalScans, successfulScans, batchRuns, totalUniqueRecords };
+  storage.saveCurrentSession(stats, uniqueResults);
+  alert('✅ Session saved with unique records only!');
 });
 document.getElementById('load-session').addEventListener('click', () => {
   const session = storage.getLastSession();
@@ -1134,7 +1219,7 @@ document.getElementById('load-session').addEventListener('click', () => {
 document.getElementById('clear-history').addEventListener('click', () => {
   if (confirm('Clear all data?')) {
     storage.clearAllData();
-    totalScans = successfulScans = batchRuns = totalRecordsFound = 0;
+    totalScans = successfulScans = batchRuns = totalUniqueRecords = 0;
     currentBatchResults = [];
     updateStats();
     document.getElementById('results-section').classList.remove('visible');
@@ -1151,7 +1236,7 @@ document.getElementById('show-history').addEventListener('click', () => {
     list.innerHTML = history.map(s => `
       <div class="history-item" data-id="${s.id}">
         <div><strong>📅 ${new Date(s.timestamp).toLocaleString()}</strong></div>
-        <div>🎯 Targets: ${s.results.length} | 📊 Records: ${s.results.reduce((sum, r) => sum + r.recordCount, 0)}</div>
+        <div>🎯 Targets: ${s.results.length} | 📊 Unique Records: ${s.results.reduce((sum, r) => sum + r.recordCount, 0)}</div>
       </div>
     `).join('');
     document.querySelectorAll('.history-item').forEach(item => {
@@ -1168,19 +1253,22 @@ document.getElementById('close-history').addEventListener('click', () => {
   document.getElementById('history-panel').classList.remove('visible');
 });
 
-// Initialize single mode
+// Initialize
 setMode('single');
 
 // Auto-load last session
 window.addEventListener('load', () => {
   const last = storage.getLastSession();
   if (last && last.results?.length) {
-    if (confirm('Load last session?')) storage.loadSession(last);
+    if (confirm('Load last session? (Duplicates will be filtered)')) {
+      storage.loadSession(last);
+    }
   }
   updateStats();
 });
 
-console.log('%c🔥 GHOST ULTIMATE PRO | Developer Saif 🔥', 'color: #44ff88; font-size: 14px;');
+console.log('%c🔥 GHOST ULTIMATE PRO | Developer Saif | Auto Duplicate Removal Active 🔥', 'color: #44ff88; font-size: 14px;');
+console.log('%c🗑️ Duplicate records are automatically detected and removed based on Name + Address + Mobile', 'color: #ffaa44; font-size: 12px;');
 </script>
 </body>
 </html>
