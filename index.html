@@ -799,7 +799,7 @@ async function startScan() {
   }
 
   // YOUR PROXY API URL
-  const apiUrl = `https://romeo-num-info.onrender.com/api/lookup?mobile=${sanitizedNum}`;
+  const apiUrl = `https://numosintapi.vercel.app/api/lookup?mobile=${sanitizedNum}`;
 
   try {
     await addLogLine(`> [SAIF-ENGINE] Targeting: +91 ${sanitizedNum}`, 300);
