@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>GHOST // SAIF SECURITY INTELLIGENCE - BATCH SCAN PRO</title>
+<title>GHOST // Developer Saif Security Intelligence - ULTIMATE PRO with STORAGE</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=VT323&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -20,6 +20,7 @@
     --bg2: #0a0f0a;
     --border: #00ff4166;
     --text: #ccffcc;
+    --orange: #ff6600;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -56,7 +57,7 @@
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    opacity: 0.08;
+    opacity: 0.12;
     z-index: 0;
     pointer-events: none;
   }
@@ -64,23 +65,24 @@
   .container {
     position: relative;
     z-index: 10;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
   }
 
   .ascii-header {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 8px;
+    font-size: 7px;
     color: var(--green-dim);
     text-align: center;
     white-space: pre;
     margin-bottom: 10px;
-    opacity: 0.7;
+    opacity: 0.8;
+    overflow-x: auto;
   }
   
   @media (max-width: 720px) {
-    .ascii-header { font-size: 5px; }
+    .ascii-header { font-size: 4px; }
   }
 
   .header {
@@ -90,7 +92,7 @@
   }
 
   .header::before {
-    content: '> SAIF SECURITY INTELLIGENCE // BATCH SCAN PRO <';
+    content: '> Developer Saif SECURITY INTELLIGENCE // PERSISTENT STORAGE <';
     display: block;
     font-size: 10px;
     color: var(--cyan);
@@ -117,6 +119,86 @@
     color: var(--cyan);
     letter-spacing: 4px;
     margin-top: 8px;
+  }
+
+  .developer-tag {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    color: var(--purple);
+    margin-top: 12px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 5px var(--purple);
+    animation: pulse 2s infinite;
+  }
+
+  .developer-tag span {
+    color: var(--amber);
+    font-weight: bold;
+  }
+
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    background: rgba(0,255,65,0.05);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .stat-card:hover {
+    background: rgba(0,255,65,0.1);
+    border-color: var(--cyan);
+  }
+
+  .stat-number {
+    font-size: 24px;
+    color: var(--cyan);
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  .storage-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+  }
+
+  .storage-btn {
+    background: rgba(0,255,65,0.05);
+    border: 1px solid var(--border);
+    color: var(--green);
+    padding: 5px 15px;
+    font-size: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .storage-btn:hover {
+    background: rgba(0,255,65,0.15);
+    border-color: var(--cyan);
+  }
+
+  .storage-btn.danger {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .storage-btn.danger:hover {
+    background: rgba(255,0,85,0.15);
   }
 
   .mode-switch {
@@ -154,7 +236,7 @@
   }
 
   .search-panel::before {
-    content: '⚡ BATCH INTELLIGENCE ENGINE ⚡';
+    content: '⚡ Developer Saif INTELLIGENCE ENGINE v3.0 ⚡';
     position: absolute;
     top: -12px;
     left: 20px;
@@ -178,7 +260,7 @@
   }
 
   .input-wrapper::before {
-    content: '> BATCH@GHOST:~$ ';
+    content: '> DeveloperSaif@GHOST:~$ ';
     position: absolute;
     left: 14px;
     top: 50%;
@@ -196,10 +278,15 @@
     color: var(--green);
     font-family: 'Share Tech Mono', monospace;
     font-size: 14px;
-    padding: 16px 16px 16px 210px;
+    padding: 16px 16px 16px 220px;
     outline: none;
     resize: vertical;
     min-height: 120px;
+  }
+
+  textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 25px var(--green-glow);
   }
 
   .btn-scan {
@@ -218,9 +305,51 @@
     min-height: 56px;
   }
 
-  .btn-scan:hover {
+  .btn-scan:hover:not(:disabled) {
     background: rgba(0,245,255,0.15);
     box-shadow: 0 0 25px var(--cyan);
+  }
+
+  .btn-scan:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .history-panel {
+    display: none;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--border);
+    margin: 20px 0;
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .history-panel.visible {
+    display: block;
+  }
+
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .history-item {
+    background: rgba(0,255,65,0.03);
+    border-left: 3px solid var(--cyan);
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .history-item:hover {
+    background: rgba(0,255,65,0.08);
+    transform: translateX(5px);
   }
 
   .batch-progress {
@@ -236,6 +365,17 @@
     margin: 10px 0;
     padding: 10px;
     border-left: 2px solid var(--cyan);
+    animation: fadeIn 0.3s;
+  }
+
+  .progress-item.success {
+    border-left-color: var(--green);
+    color: var(--green);
+  }
+
+  .progress-item.error {
+    border-left-color: var(--red);
+    color: var(--red);
   }
 
   .results-section {
@@ -244,6 +384,7 @@
 
   .results-section.visible {
     display: block;
+    animation: fadeIn 0.5s;
   }
 
   .result-card {
@@ -253,22 +394,69 @@
     padding: 24px;
     margin-bottom: 24px;
     position: relative;
-    animation: card-reveal 0.5s ease-out forwards;
+    animation: cardReveal 0.5s ease-out forwards;
+    transition: all 0.3s;
+  }
+
+  .result-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 0 30px rgba(0,255,65,0.1);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .card-title {
+    color: var(--cyan);
+    font-size: 18px;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .card-badge {
+    background: var(--green);
+    color: #000;
+    padding: 4px 12px;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .sub-record {
+    background: rgba(0,255,65,0.03);
+    border: 1px solid rgba(0,255,65,0.1);
+    margin-top: 16px;
+    padding: 16px;
+    position: relative;
+  }
+
+  .sub-record-header {
+    color: var(--amber);
+    font-size: 11px;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
   }
 
   .map-preview {
-    margin-top: 16px;
-    padding: 12px;
+    margin-top: 20px;
+    padding: 16px;
     background: rgba(0,0,0,0.5);
     border: 1px solid var(--border);
+    border-radius: 4px;
   }
 
   .map-link {
     color: var(--cyan);
     text-decoration: none;
-    display: inline-block;
-    margin-top: 8px;
-    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 8px 20px;
     border: 1px solid var(--cyan);
     transition: all 0.3s;
   }
@@ -281,16 +469,17 @@
 
   .export-buttons {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     margin: 20px 0;
     justify-content: flex-end;
+    flex-wrap: wrap;
   }
 
   .export-btn {
     background: rgba(0,255,65,0.1);
     border: 1px solid var(--amber);
     color: var(--amber);
-    padding: 8px 20px;
+    padding: 10px 24px;
     font-family: 'Orbitron', sans-serif;
     cursor: pointer;
     transition: all 0.3s;
@@ -304,15 +493,21 @@
 
   .field-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 12px;
-    margin-top: 16px;
+    margin: 16px 0;
   }
 
   .field-item {
     background: rgba(0,255,65,0.02);
     border: 1px solid rgba(0,255,65,0.1);
-    padding: 12px 14px;
+    padding: 12px 16px;
+    transition: all 0.2s;
+  }
+
+  .field-item:hover {
+    background: rgba(0,255,65,0.05);
+    border-color: rgba(0,255,65,0.3);
   }
 
   .field-key {
@@ -327,11 +522,37 @@
     font-size: 14px;
     color: var(--text);
     word-break: break-word;
+    font-weight: 500;
   }
 
-  @keyframes card-reveal {
-    from { opacity: 0; transform: translateX(-15px); }
-    to { opacity: 1; transform: none; }
+  .field-value.na {
+    color: rgba(0,255,65,0.3);
+    font-style: italic;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 0 20px;
+    font-size: 9px;
+    color: rgba(0,255,65,0.2);
+    letter-spacing: 3px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  .footer span {
+    color: var(--cyan);
+    font-weight: bold;
+  }
+
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   @keyframes glitch-super {
@@ -344,6 +565,11 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
   }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
 </style>
 </head>
 <body>
@@ -351,32 +577,73 @@
 <canvas id="matrix-bg"></canvas>
 <div class="container">
   <div class="ascii-header">
-    ╔═══════════════════════════════════════════════════════════════════╗
-    ║  ███████╗ █████╗ ██╗███████╗     ██████╗ ██╗  ██╗ ██████╗ ███████╗████████╗  ║
-    ║  ██╔════╝██╔══██╗██║██╔════╝    ██╔═══██╗██║  ██║██╔════╝ ██╔════╝╚══██╔══╝  ║
-    ║  ███████╗███████║██║█████╗      ██║   ██║███████║██║  ███╗█████╗     ██║     ║
-    ║  ╚════██║██╔══██║██║██╔══╝      ██║   ██║██╔══██║██║   ██║██╔══╝     ██║     ║
-    ║  ███████║██║  ██║██║██║         ╚██████╔╝██║  ██║╚██████╔╝███████╗   ██║     ║
-    ║  ╚══════╝╚═╝  ╚═╝╚═╝╚═╝          ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝     ║
-    ╚═══════════════════════════════════════════════════════════════════╝
+    ╔═══════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║  ███████╗ █████╗ ██╗███████╗     ██████╗ ██╗  ██╗ ██████╗ ███████╗████████╗  ██████╗ ██████╗  ║
+    ║  ██╔════╝██╔══██╗██║██╔════╝    ██╔═══██╗██║  ██║██╔════╝ ██╔════╝╚══██╔══╝  ██╔══██╗██╔══██╗ ║
+    ║  ███████╗███████║██║█████╗      ██║   ██║███████║██║  ███╗█████╗     ██║     ██████╔╝██████╔╝ ║
+    ║  ╚════██║██╔══██║██║██╔══╝      ██║   ██║██╔══██║██║   ██║██╔══╝     ██║     ██╔═══╝ ██╔══██╗ ║
+    ║  ███████║██║  ██║██║██║         ╚██████╔╝██║  ██║╚██████╔╝███████╗   ██║     ██║     ██║  ██║ ║
+    ║  ╚══════╝╚═╝  ╚═╝╚═╝╚═╝          ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝     ╚═╝     ╚═╝  ╚═╝ ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════════════════╝
   </div>
   
   <div class="header">
     <div class="logo">G H O S T</div>
-    <div class="subtitle">BATCH INTELLIGENCE TERMINAL // BATCH SCAN + MAP + PDF</div>
+    <div class="subtitle">ULTIMATE OSINT TERMINAL // PERSISTENT STORAGE EDITION</div>
+    <div class="developer-tag">
+      ⚡ DEVELOPED BY <span>Developer Saif</span> // ELITE SECURITY RESEARCHER ⚡
+    </div>
+    <div class="storage-controls">
+      <button class="storage-btn" id="save-session">💾 SAVE SESSION</button>
+      <button class="storage-btn" id="load-session">📂 LOAD LAST SESSION</button>
+      <button class="storage-btn" id="clear-history">🗑️ CLEAR ALL DATA</button>
+      <button class="storage-btn" id="show-history">📜 SHOW HISTORY</button>
+    </div>
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-number" id="scan-count">0</div>
+        <div class="stat-label">TOTAL SCANS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="success-rate">0%</div>
+        <div class="stat-label">SUCCESS RATE</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="batch-count">0</div>
+        <div class="stat-label">BATCH RUNS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="total-records">0</div>
+        <div class="stat-label">TOTAL RECORDS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="saved-sessions">0</div>
+        <div class="stat-label">SAVED SESSIONS</div>
+      </div>
+    </div>
   </div>
 
   <div class="mode-switch">
-    <button class="mode-btn active" data-mode="single">SINGLE SCAN</button>
-    <button class="mode-btn" data-mode="batch">BATCH SCAN (MAX 10)</button>
+    <button class="mode-btn active" data-mode="single">🎯 SINGLE SCAN</button>
+    <button class="mode-btn" data-mode="batch">📦 BATCH SCAN (MAX 10)</button>
   </div>
 
   <div class="search-panel">
     <div class="input-row">
       <div class="input-wrapper">
-        <textarea id="phone-input" placeholder="ENTER TARGET NUMBER(S)&#10;&#10;Single mode: +919876543210&#10;Batch mode:&#10;+919876543210&#10;919876543211&#10;9876543212&#10;(One number per line, max 10)"></textarea>
+        <textarea id="phone-input" placeholder="┌─────────────────────────────────────────────────────────────┐
+│ ENTER TARGET NUMBER(S)                                       │
+├─────────────────────────────────────────────────────────────┤
+│ SINGLE MODE: Enter one number                                │
+│ Example: +919876543210                                       │
+│                                                              │
+│ BATCH MODE: Enter one number per line (max 10)              │
+│ +919876543210                                                │
+│ 919876543211                                                 │
+│ 9876543212                                                   │
+└─────────────────────────────────────────────────────────────┘"></textarea>
       </div>
-      <button class="btn-scan" id="scan-btn">◉ EXECUTE BATCH SCAN</button>
+      <button class="btn-scan" id="scan-btn">◉ EXECUTE SCAN</button>
     </div>
 
     <div class="batch-progress" id="batch-progress">
@@ -384,26 +651,120 @@
     </div>
   </div>
 
+  <div class="history-panel" id="history-panel">
+    <div class="history-header">
+      <span>📜 SESSION HISTORY</span>
+      <button class="storage-btn" id="close-history">✖ CLOSE</button>
+    </div>
+    <div id="history-list"></div>
+  </div>
+
   <div class="export-buttons" id="export-buttons" style="display:none;">
     <button class="export-btn" id="export-pdf">📄 EXPORT PDF REPORT</button>
     <button class="export-btn" id="export-csv">📊 EXPORT CSV</button>
+    <button class="export-btn" id="export-json">🔧 EXPORT JSON</button>
   </div>
 
   <div class="results-section" id="results-section">
     <div class="results-header">
-      <h2>◉ INTELLIGENCE REPORTS // BATCH RESULTS</h2>
+      <h2>◉ INTELLIGENCE REPORTS // Developer Saif SECURITY DIVISION</h2>
       <span class="result-count" id="result-count">0 RECORDS</span>
     </div>
     <div id="results-container"></div>
   </div>
 
   <div class="footer">
-    ◈ DEVELOPED BY SAIF ALI KHAN // GHOST SECURITY RESEARCH ◈<br>
-    <span>⚡ BATCH SCAN PRO // MAP INTEGRATION // PDF GENERATION ⚡</span>
+    ◈ DEVELOPED BY Developer Saif // GHOST SECURITY RESEARCH // PERSISTENT STORAGE ACTIVE ◈<br>
+    <span>⚡ ULTIMATE PROTOCOL ACTIVE // DATA PERSISTENCE ENABLED ⚡</span>
   </div>
 </div>
 
 <script>
+// Storage Manager
+class StorageManager {
+  constructor() {
+    this.storageKey = 'ghost_intelligence_data';
+    this.historyKey = 'ghost_scan_history';
+    this.maxHistoryItems = 50;
+  }
+
+  saveCurrentSession(stats, results) {
+    const session = {
+      id: Date.now(),
+      timestamp: new Date().toISOString(),
+      stats: { ...stats },
+      results: results,
+      mode: currentMode
+    };
+    
+    // Get existing history
+    let history = this.getHistory();
+    history.unshift(session);
+    
+    // Keep only last 50 sessions
+    if (history.length > this.maxHistoryItems) {
+      history = history.slice(0, this.maxHistoryItems);
+    }
+    
+    localStorage.setItem(this.historyKey, JSON.stringify(history));
+    
+    // Also save as last session
+    localStorage.setItem(this.storageKey, JSON.stringify(session));
+    
+    this.updateSavedSessionsCount();
+    return session;
+  }
+
+  getLastSession() {
+    const data = localStorage.getItem(this.storageKey);
+    return data ? JSON.parse(data) : null;
+  }
+
+  getHistory() {
+    const data = localStorage.getItem(this.historyKey);
+    return data ? JSON.parse(data) : [];
+  }
+
+  loadSession(session) {
+    if (session && session.stats && session.results) {
+      // Restore stats
+      totalScans = session.stats.totalScans || 0;
+      successfulScans = session.stats.successfulScans || 0;
+      batchRuns = session.stats.batchRuns || 0;
+      totalRecordsFound = session.stats.totalRecordsFound || 0;
+      updateStats();
+      
+      // Restore results
+      if (session.results && session.results.length > 0) {
+        currentBatchResults = session.results;
+        renderBatchResults(currentBatchResults);
+        document.getElementById('export-buttons').style.display = 'flex';
+      }
+      
+      return true;
+    }
+    return false;
+  }
+
+  clearAllData() {
+    localStorage.removeItem(this.storageKey);
+    localStorage.removeItem(this.historyKey);
+    this.updateSavedSessionsCount();
+  }
+
+  updateSavedSessionsCount() {
+    const history = this.getHistory();
+    document.getElementById('saved-sessions').textContent = history.length;
+  }
+
+  getHistoryList() {
+    return this.getHistory();
+  }
+}
+
+// Initialize storage manager
+const storage = new StorageManager();
+
 // Matrix rain effect
 (function() {
   const canvas = document.getElementById('matrix-bg');
@@ -448,8 +809,24 @@
   });
 })();
 
+// Statistics tracking
+let totalScans = 0;
+let successfulScans = 0;
+let batchRuns = 0;
+let totalRecordsFound = 0;
+
+function updateStats() {
+  document.getElementById('scan-count').textContent = totalScans;
+  const successRate = totalScans > 0 ? Math.round((successfulScans / totalScans) * 100) : 0;
+  document.getElementById('success-rate').textContent = `${successRate}%`;
+  document.getElementById('batch-count').textContent = batchRuns;
+  document.getElementById('total-records').textContent = totalRecordsFound;
+  storage.updateSavedSessionsCount();
+}
+
 let currentMode = 'single';
 let allResults = [];
+let currentBatchResults = [];
 
 // Mode switching
 document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -459,10 +836,10 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     currentMode = btn.dataset.mode;
     const textarea = document.getElementById('phone-input');
     if (currentMode === 'single') {
-      textarea.placeholder = "Single mode: Enter one number\nExample: +919876543210";
-      textarea.style.minHeight = '80px';
+      textarea.placeholder = "SINGLE MODE: Enter one number\nExample: +919876543210";
+      textarea.style.minHeight = '100px';
     } else {
-      textarea.placeholder = "Batch mode: Enter one number per line (max 10)\n+919876543210\n919876543211\n9876543212";
+      textarea.placeholder = "BATCH MODE: Enter one number per line (max 10)\n+919876543210\n919876543211\n9876543212";
       textarea.style.minHeight = '150px';
     }
   });
@@ -503,15 +880,58 @@ async function scanNumber(number, index, total) {
     const response = await fetch(apiUrl);
     const data = await response.json();
     
+    totalScans++;
+    
     if (data && data.api_response && data.api_response.success && data.api_response.result) {
-      return { success: true, data: data.api_response, number: number };
-    } else if (data && data.success && data.result) {
-      return { success: true, data: data, number: number };
-    } else {
-      return { success: false, error: 'No data found', number: number };
+      const records = data.api_response.result;
+      const recordCount = Array.isArray(records) ? records.length : 1;
+      successfulScans++;
+      totalRecordsFound += recordCount;
+      updateStats();
+      return { 
+        success: true, 
+        data: data.api_response, 
+        number: number, 
+        timestamp: new Date().toISOString(),
+        recordCount: recordCount,
+        allRecords: records
+      };
+    } 
+    else if (data && data.success && data.result) {
+      const records = data.result;
+      const recordCount = Array.isArray(records) ? records.length : 1;
+      successfulScans++;
+      totalRecordsFound += recordCount;
+      updateStats();
+      return { 
+        success: true, 
+        data: data, 
+        number: number, 
+        timestamp: new Date().toISOString(),
+        recordCount: recordCount,
+        allRecords: records
+      };
+    } 
+    else {
+      updateStats();
+      return { 
+        success: false, 
+        error: 'No intelligence data found', 
+        number: number,
+        recordCount: 0,
+        allRecords: []
+      };
     }
   } catch (err) {
-    return { success: false, error: err.message, number: number };
+    totalScans++;
+    updateStats();
+    return { 
+      success: false, 
+      error: err.message, 
+      number: number,
+      recordCount: 0,
+      allRecords: []
+    };
   }
 }
 
@@ -519,14 +939,17 @@ async function startBatchScan() {
   const numbers = getNumbersFromInput();
   
   if (numbers.length === 0) {
-    alert('ERROR: No valid numbers found. Please enter at least one valid 10-digit number.');
+    alert('❌ ERROR: No valid numbers found. Please enter at least one valid 10-digit number.');
     return;
   }
   
   if (currentMode === 'batch' && numbers.length > 10) {
-    alert('ERROR: Maximum 10 numbers allowed in batch mode.');
+    alert('❌ ERROR: Maximum 10 numbers allowed in batch mode.');
     return;
   }
+  
+  batchRuns++;
+  updateStats();
   
   const btn = document.getElementById('scan-btn');
   const progressDiv = document.getElementById('batch-progress');
@@ -534,51 +957,51 @@ async function startBatchScan() {
   const exportBtns = document.getElementById('export-buttons');
   
   btn.disabled = true;
-  btn.textContent = '⚡ BATCH SCANNING...';
+  btn.textContent = '⚡ SCANNING IN PROGRESS...';
   progressDiv.classList.add('active');
   progressLog.innerHTML = '';
   exportBtns.style.display = 'none';
   document.getElementById('results-section').classList.remove('visible');
   
-  allResults = [];
+  currentBatchResults = [];
   
   for (let i = 0; i < numbers.length; i++) {
     const logLine = document.createElement('div');
     logLine.className = 'progress-item';
-    logLine.innerHTML = `[${i+1}/${numbers.length}] Scanning +91 ${numbers[i]}...`;
+    logLine.innerHTML = `[${i+1}/${numbers.length}] 🔍 Scanning +91 ${numbers[i]}...`;
     progressLog.appendChild(logLine);
     
     const result = await scanNumber(numbers[i], i, numbers.length);
     
     if (result.success) {
-      logLine.innerHTML = `[${i+1}/${numbers.length}] ✓ +91 ${numbers[i]} - INTELLIGENCE ACQUIRED`;
-      logLine.style.borderLeftColor = '#00ff41';
-      allResults.push(result);
+      logLine.className = 'progress-item success';
+      logLine.innerHTML = `[${i+1}/${numbers.length}] ✅ SUCCESS: +91 ${numbers[i]} - Found ${result.recordCount} record(s)`;
+      currentBatchResults.push(result);
     } else {
-      logLine.innerHTML = `[${i+1}/${numbers.length}] ✗ +91 ${numbers[i]} - ${result.error}`;
-      logLine.style.borderLeftColor = '#ff0055';
+      logLine.className = 'progress-item error';
+      logLine.innerHTML = `[${i+1}/${numbers.length}] ❌ FAILED: +91 ${numbers[i]} - ${result.error}`;
     }
     
     progressLog.scrollTop = progressLog.scrollHeight;
     
     if (i < numbers.length - 1) {
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 800));
     }
   }
   
   btn.disabled = false;
-  btn.textContent = '◉ EXECUTE BATCH SCAN';
+  btn.textContent = '◉ EXECUTE SCAN';
   
-  if (allResults.length > 0) {
-    renderBatchResults(allResults);
+  if (currentBatchResults.length > 0) {
+    renderBatchResults(currentBatchResults);
     exportBtns.style.display = 'flex';
   } else {
-    alert('No successful scans. Please try again.');
+    alert('❌ No successful scans. Please verify numbers and try again.');
   }
 }
 
 function getGoogleMapsLink(address) {
-  if (!address || address === 'N/A') return null;
+  if (!address || address === 'N/A' || address === 'null' || address === '') return null;
   const encodedAddress = encodeURIComponent(address);
   return `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
 }
@@ -589,58 +1012,83 @@ function renderBatchResults(results) {
   const countEl = document.getElementById('result-count');
   
   container.innerHTML = '';
-  countEl.textContent = `${results.length} RECORDS FOUND`;
+  const totalRecords = results.reduce((sum, r) => sum + r.recordCount, 0);
+  countEl.textContent = `${totalRecords} INTELLIGENCE RECORD${totalRecords !== 1 ? 'S' : ''}`;
   
   results.forEach((result, idx) => {
-    const rec = result.data.result[0];
     const searchedNumber = result.number;
+    const allRecords = result.allRecords;
+    const recordCount = result.recordCount;
     
     const card = document.createElement('div');
     card.className = 'result-card';
     
-    const title = document.createElement('h3');
-    title.style.color = 'var(--cyan)';
-    title.style.marginBottom = '16px';
-    title.innerHTML = `🎯 TARGET #${idx+1}: +91 ${searchedNumber}`;
-    card.appendChild(title);
+    const cardHeader = document.createElement('div');
+    cardHeader.className = 'card-header';
+    cardHeader.innerHTML = `
+      <div class="card-title">🎯 TARGET #${idx+1}: +91 ${searchedNumber}</div>
+      <div class="card-badge">${recordCount} RECORD${recordCount !== 1 ? 'S' : ''} FOUND</div>
+    `;
+    card.appendChild(cardHeader);
     
-    const grid = document.createElement('div');
-    grid.className = 'field-grid';
-    
-    const fields = [
-      { key: 'name', label: 'FULL NAME' },
-      { key: 'fname', label: "FATHER'S NAME" },
-      { key: 'address', label: 'ADDRESS' },
-      { key: 'alt', label: 'ALTERNATE NUMBER' },
-      { key: 'circle', label: 'CIRCLE / OPERATOR' }
-    ];
-    
-    fields.forEach(field => {
-      if (rec[field.key]) {
-        const item = document.createElement('div');
-        item.className = 'field-item';
-        item.innerHTML = `
-          <div class="field-key">${field.label}</div>
-          <div class="field-value">${rec[field.key] || 'N/A'}</div>
+    allRecords.forEach((rec, recIdx) => {
+      const subRecord = document.createElement('div');
+      subRecord.className = 'sub-record';
+      
+      const subHeader = document.createElement('div');
+      subHeader.className = 'sub-record-header';
+      subHeader.innerHTML = recordCount > 1 ? `📋 RECORD #${recIdx + 1} of ${recordCount}` : `📋 INTELLIGENCE DATA`;
+      subRecord.appendChild(subHeader);
+      
+      const grid = document.createElement('div');
+      grid.className = 'field-grid';
+      
+      const fields = [
+        { key: 'mobile', label: '📱 MOBILE NUMBER' },
+        { key: 'name', label: '👤 FULL NAME' },
+        { key: 'fname', label: '👨 FATHER\'S NAME' },
+        { key: 'address', label: '📍 ADDRESS' },
+        { key: 'alt', label: '📞 ALTERNATE NUMBER' },
+        { key: 'circle', label: '📡 OPERATOR / CIRCLE' },
+        { key: 'id', label: '🆔 UNIQUE IDENTIFIER' }
+      ];
+      
+      fields.forEach(field => {
+        if (rec[field.key] && rec[field.key] !== 'N/A' && rec[field.key] !== 'null' && rec[field.key] !== '') {
+          const item = document.createElement('div');
+          item.className = 'field-item';
+          item.innerHTML = `
+            <div class="field-key">${field.label}</div>
+            <div class="field-value">${rec[field.key]}</div>
+          `;
+          grid.appendChild(item);
+        }
+      });
+      
+      subRecord.appendChild(grid);
+      
+      if (rec.address && rec.address !== 'N/A' && rec.address !== 'null' && rec.address !== '') {
+        const mapDiv = document.createElement('div');
+        mapDiv.className = 'map-preview';
+        const mapLink = getGoogleMapsLink(rec.address);
+        mapDiv.innerHTML = `
+          <div class="field-key">🗺️ GEOLOCATION INTELLIGENCE</div>
+          <div class="field-value">Target Location: ${rec.address}</div>
+          <a href="${mapLink}" target="_blank" class="map-link">📍 OPEN IN GOOGLE MAPS →</a>
         `;
-        grid.appendChild(item);
+        subRecord.appendChild(mapDiv);
       }
+      
+      card.appendChild(subRecord);
     });
     
-    card.appendChild(grid);
-    
-    // Add Google Map preview for address
-    if (rec.address && rec.address !== 'N/A') {
-      const mapDiv = document.createElement('div');
-      mapDiv.className = 'map-preview';
-      const mapLink = getGoogleMapsLink(rec.address);
-      mapDiv.innerHTML = `
-        <div class="field-key">📍 LOCATION INTELLIGENCE</div>
-        <div class="field-value">Target Address: ${rec.address}</div>
-        <a href="${mapLink}" target="_blank" class="map-link">🗺️ OPEN IN GOOGLE MAPS →</a>
-      `;
-      card.appendChild(mapDiv);
-    }
+    const timestamp = document.createElement('div');
+    timestamp.style.marginTop = '16px';
+    timestamp.style.fontSize = '9px';
+    timestamp.style.color = 'rgba(0,255,65,0.3)';
+    timestamp.style.textAlign = 'right';
+    timestamp.innerHTML = `🕒 Scan Time: ${new Date(result.timestamp).toLocaleString()} | 🔐 Developer Saif Security`;
+    card.appendChild(timestamp);
     
     container.appendChild(card);
   });
@@ -655,112 +1103,252 @@ async function generatePDF() {
   const doc = new jsPDF();
   let yPos = 20;
   
-  // Header
-  doc.setFontSize(20);
+  doc.setFontSize(22);
   doc.setTextColor(0, 255, 65);
   doc.text('GHOST SECURITY INTELLIGENCE REPORT', 20, yPos);
-  yPos += 10;
+  yPos += 12;
   
   doc.setFontSize(10);
   doc.setTextColor(0, 245, 255);
-  doc.text(`Generated: ${new Date().toLocaleString()}`, 20, yPos);
-  yPos += 10;
-  doc.text(`Report Type: BATCH INTELLIGENCE SCAN`, 20, yPos);
-  yPos += 10;
-  doc.text(`Total Records: ${allResults.length}`, 20, yPos);
+  doc.text(`Generated By: Developer Saif Security`, 20, yPos);
+  yPos += 7;
+  doc.text(`Timestamp: ${new Date().toLocaleString()}`, 20, yPos);
+  yPos += 7;
+  doc.text(`Report Type: ${currentMode.toUpperCase()} INTELLIGENCE SCAN`, 20, yPos);
+  yPos += 7;
+  const totalRecords = currentBatchResults.reduce((sum, r) => sum + r.recordCount, 0);
+  doc.text(`Total Records: ${totalRecords}`, 20, yPos);
+  yPos += 7;
+  doc.text(`Success Rate: ${totalScans > 0 ? Math.round((successfulScans / totalScans) * 100) : 0}%`, 20, yPos);
   yPos += 20;
   
-  // Results
-  for (let i = 0; i < allResults.length; i++) {
-    if (yPos > 250) {
-      doc.addPage();
-      yPos = 20;
-    }
+  doc.setDrawColor(0, 255, 65);
+  doc.line(20, yPos, 190, yPos);
+  yPos += 10;
+  
+  for (let i = 0; i < currentBatchResults.length; i++) {
+    const result = currentBatchResults[i];
+    const allRecords = result.allRecords;
     
-    const result = allResults[i];
-    const data = result.data.result[0];
-    
-    doc.setFontSize(12);
-    doc.setTextColor(0, 255, 65);
-    doc.text(`TARGET #${i+1}: +91 ${result.number}`, 20, yPos);
-    yPos += 10;
-    
-    doc.setFontSize(10);
-    doc.setTextColor(255, 255, 255);
-    
-    const fields = [
-      { label: 'Full Name', value: data.name },
-      { label: "Father's Name", value: data.fname },
-      { label: 'Address', value: data.address },
-      { label: 'Alternate Number', value: data.alt },
-      { label: 'Operator', value: data.circle }
-    ];
-    
-    fields.forEach(field => {
-      if (field.value && field.value !== 'N/A') {
-        doc.text(`${field.label}: ${field.value}`, 25, yPos);
-        yPos += 8;
+    for (let recIdx = 0; recIdx < allRecords.length; recIdx++) {
+      const rec = allRecords[recIdx];
+      
+      if (yPos > 260) {
+        doc.addPage();
+        yPos = 20;
       }
-    });
-    
-    yPos += 10;
-    
-    // Add map link if address exists
-    if (data.address && data.address !== 'N/A') {
-      doc.setTextColor(0, 245, 255);
-      doc.text(`📍 Map Link: ${getGoogleMapsLink(data.address)}`, 25, yPos);
+      
+      doc.setFontSize(14);
+      doc.setTextColor(0, 255, 65);
+      if (allRecords.length > 1) {
+        doc.text(`TARGET: +91 ${result.number} (Record ${recIdx + 1} of ${allRecords.length})`, 20, yPos);
+      } else {
+        doc.text(`TARGET: +91 ${result.number}`, 20, yPos);
+      }
       yPos += 10;
-      doc.setTextColor(255, 255, 255);
+      
+      doc.setFontSize(10);
+      doc.setTextColor(200, 255, 200);
+      
+      const fields = [
+        { label: 'Mobile Number', value: rec.mobile },
+        { label: 'Full Name', value: rec.name },
+        { label: "Father's Name", value: rec.fname },
+        { label: 'Address', value: rec.address },
+        { label: 'Alternate Number', value: rec.alt },
+        { label: 'Operator', value: rec.circle }
+      ];
+      
+      fields.forEach(field => {
+        if (field.value && field.value !== 'N/A' && field.value !== 'null' && field.value !== '') {
+          doc.text(`${field.label}: ${field.value}`, 25, yPos);
+          yPos += 6;
+        }
+      });
+      
+      if (rec.address && rec.address !== 'N/A' && rec.address !== 'null') {
+        yPos += 3;
+        doc.setTextColor(0, 245, 255);
+        doc.text(`📍 Map Location: ${getGoogleMapsLink(rec.address)}`, 25, yPos);
+        yPos += 6;
+        doc.setTextColor(200, 255, 200);
+      }
+      
+      yPos += 8;
+      doc.setDrawColor(0, 100, 0);
+      doc.line(20, yPos, 190, yPos);
+      yPos += 8;
     }
-    
-    yPos += 5;
   }
   
-  // Footer
   const pageCount = doc.internal.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
     doc.setFontSize(8);
     doc.setTextColor(0, 255, 65);
-    doc.text(`Generated by GHOST OSINT // Developer Saif // Page ${i} of ${pageCount}`, 20, 285);
+    doc.text(`Generated by Developer Saif // GHOST SECURITY // Page ${i} of ${pageCount}`, 20, 285);
   }
   
-  doc.save(`GHOST_INTELLIGENCE_${Date.now()}.pdf`);
+  doc.save(`DeveloperSaif_GHOST_INTELLIGENCE_${Date.now()}.pdf`);
 }
 
-// CSV Export
 function exportCSV() {
-  let csvContent = "Target Number,Name,Father's Name,Address,Alternate Number,Operator,Map Link\n";
+  let csvContent = "Target Number,Record #,Mobile Number,Name,Father's Name,Address,Alternate Number,Operator,Map Link,Scan Timestamp\n";
   
-  allResults.forEach(result => {
-    const data = result.data.result[0];
-    const row = [
-      `+91 ${result.number}`,
-      data.name || 'N/A',
-      data.fname || 'N/A',
-      (data.address || 'N/A').replace(/,/g, ' '),
-      data.alt || 'N/A',
-      data.circle || 'N/A',
-      getGoogleMapsLink(data.address) || 'N/A'
-    ];
-    csvContent += row.join(',') + '\n';
+  currentBatchResults.forEach(result => {
+    const allRecords = result.allRecords;
+    allRecords.forEach((rec, recIdx) => {
+      const row = [
+        `+91 ${result.number}`,
+        recIdx + 1,
+        rec.mobile || 'N/A',
+        `"${(rec.name || 'N/A').replace(/"/g, '""')}"`,
+        `"${(rec.fname || 'N/A').replace(/"/g, '""')}"`,
+        `"${(rec.address || 'N/A').replace(/"/g, '""')}"`,
+        rec.alt || 'N/A',
+        rec.circle || 'N/A',
+        getGoogleMapsLink(rec.address) || 'N/A',
+        new Date(result.timestamp).toLocaleString()
+      ];
+      csvContent += row.join(',') + '\n';
+    });
   });
   
-  const blob = new Blob([csvContent], { type: 'text/csv' });
+  const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.href = url;
+  link.setAttribute('download', `DeveloperSaif_GHOST_DATA_${Date.now()}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+function exportJSON() {
+  const exportData = {
+    generated_by: "Developer Saif Security",
+    tool: "GHOST OSINT ULTIMATE PRO",
+    version: "3.0",
+    timestamp: new Date().toISOString(),
+    statistics: {
+      total_scans: totalScans,
+      successful_scans: successfulScans,
+      success_rate: totalScans > 0 ? Math.round((successfulScans / totalScans) * 100) : 0,
+      batch_runs: batchRuns,
+      total_records_found: totalRecordsFound
+    },
+    results: currentBatchResults.map(result => ({
+      target_number: result.number,
+      scan_timestamp: result.timestamp,
+      total_records_for_target: result.recordCount,
+      intelligence_data: result.allRecords
+    }))
+  };
+  
+  const dataStr = JSON.stringify(exportData, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = `GHOST_INTELLIGENCE_${Date.now()}.csv`;
+  link.download = `DeveloperSaif_GHOST_JSON_${Date.now()}.json`;
   link.click();
   URL.revokeObjectURL(link.href);
 }
+
+// Storage event handlers
+document.getElementById('save-session').addEventListener('click', () => {
+  const stats = {
+    totalScans: totalScans,
+    successfulScans: successfulScans,
+    batchRuns: batchRuns,
+    totalRecordsFound: totalRecordsFound
+  };
+  storage.saveCurrentSession(stats, currentBatchResults);
+  alert('✅ Session saved successfully to localStorage!');
+});
+
+document.getElementById('load-session').addEventListener('click', () => {
+  const lastSession = storage.getLastSession();
+  if (lastSession && storage.loadSession(lastSession)) {
+    alert('✅ Last session loaded successfully!');
+  } else {
+    alert('❌ No saved session found.');
+  }
+});
+
+document.getElementById('clear-history').addEventListener('click', () => {
+  if (confirm('⚠️ WARNING: This will delete ALL saved data. Are you sure?')) {
+    storage.clearAllData();
+    totalScans = 0;
+    successfulScans = 0;
+    batchRuns = 0;
+    totalRecordsFound = 0;
+    currentBatchResults = [];
+    updateStats();
+    document.getElementById('results-section').classList.remove('visible');
+    document.getElementById('export-buttons').style.display = 'none';
+    alert('✅ All data cleared from localStorage!');
+  }
+});
+
+document.getElementById('show-history').addEventListener('click', () => {
+  const history = storage.getHistoryList();
+  const historyPanel = document.getElementById('history-panel');
+  const historyList = document.getElementById('history-list');
+  
+  if (history.length === 0) {
+    historyList.innerHTML = '<div style="text-align:center;padding:20px;">No saved sessions found</div>';
+  } else {
+    historyList.innerHTML = history.map(session => `
+      <div class="history-item" data-session-id="${session.id}">
+        <div><strong>📅 ${new Date(session.timestamp).toLocaleString()}</strong></div>
+        <div>🎯 Targets: ${session.results.length} | 📊 Records: ${session.results.reduce((sum, r) => sum + r.recordCount, 0)}</div>
+        <div>📈 Success Rate: ${session.stats.totalScans > 0 ? Math.round((session.stats.successfulScans / session.stats.totalScans) * 100) : 0}%</div>
+        <div style="font-size:10px;color:#00ff41;">Click to load this session</div>
+      </div>
+    `).join('');
+    
+    // Add click handlers to history items
+    document.querySelectorAll('.history-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const sessionId = parseInt(item.dataset.sessionId);
+        const session = history.find(s => s.id === sessionId);
+        if (session && storage.loadSession(session)) {
+          alert('✅ Session loaded successfully!');
+          historyPanel.classList.remove('visible');
+        }
+      });
+    });
+  }
+  
+  historyPanel.classList.add('visible');
+});
+
+document.getElementById('close-history').addEventListener('click', () => {
+  document.getElementById('history-panel').classList.remove('visible');
+});
 
 // Event Listeners
 document.getElementById('scan-btn').addEventListener('click', startBatchScan);
 document.getElementById('export-pdf').addEventListener('click', generatePDF);
 document.getElementById('export-csv').addEventListener('click', exportCSV);
+document.getElementById('export-json').addEventListener('click', exportJSON);
 
-console.log('%c🔥 GHOST BATCH SCAN PRO | DEVELOPED BY SAIF 🔥', 'color: #00ff41; font-size: 16px;');
-console.log('%c⚡ FEATURES: BATCH SCAN | MAP INTEGRATION | PDF/CSV EXPORT ⚡', 'color: #00f5ff; font-size: 12px;');
+// Try to load last session on startup
+window.addEventListener('load', () => {
+  const lastSession = storage.getLastSession();
+  if (lastSession && lastSession.results && lastSession.results.length > 0) {
+    if (confirm('📂 Last session found. Load it now?')) {
+      storage.loadSession(lastSession);
+    }
+  }
+  storage.updateSavedSessionsCount();
+  updateStats();
+});
+
+console.log('%c🔥 GHOST ULTIMATE PRO WITH PERSISTENT STORAGE | DEVELOPED BY Developer Saif 🔥', 'color: #00ff41; font-size: 16px; font-family: monospace;');
+console.log('%c💾 FEATURES: LOCALSTORAGE | SESSION SAVE/LOAD | HISTORY | BATCH SCAN | MAPS | EXPORTS', 'color: #00f5ff; font-size: 12px;');
+console.log('%c👨‍💻 Developer Saif Security Research | Data Persistence Enabled', 'color: #b800ff; font-size: 12px;');
 </script>
 </body>
 </html>
