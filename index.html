@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>GHOST // Developer Saif - AUTO DEEP SCAN INTELLIGENCE TERMINAL</title>
+<title>GHOST // Developer Saif - FAMILY INTELLIGENCE TERMINAL</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=VT323&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -78,7 +78,7 @@
   }
 
   .header::before {
-    content: '> Developer Saif AUTO DEEP SCAN INTELLIGENCE <';
+    content: '> Developer Saif FAMILY INTELLIGENCE // AUTO RATION CARD LINK <';
     display: block;
     font-size: 10px;
     color: var(--cyan);
@@ -122,13 +122,13 @@
     font-weight: bold;
   }
 
-  .auto-deep-badge {
+  .auto-family-badge {
     text-align: center;
     margin: 10px 0;
     padding: 6px;
-    background: rgba(255,100,0,0.15);
+    background: rgba(255,100,0,0.2);
     border: 1px solid var(--orange);
-    color: var(--orange);
+    color: #ffaa44;
     font-size: 11px;
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 2px;
@@ -221,7 +221,7 @@
   }
 
   .search-panel::before {
-    content: '⚡ AUTO DEEP SCAN ENGINE // FOLLOWS ALL ALTERNATES ⚡';
+    content: '⚡ FAMILY INTELLIGENCE ENGINE // AUTO RATION CARD LINK ⚡';
     position: absolute;
     top: -12px;
     left: 20px;
@@ -245,7 +245,7 @@
   }
 
   .input-wrapper::before {
-    content: '> AUTO-DEEP@GHOST:~$ ';
+    content: '> FAMILY-INTEL@GHOST:~$ ';
     position: absolute;
     left: 14px;
     top: 50%;
@@ -387,6 +387,12 @@
     background: rgba(255,100,0,0.1);
   }
 
+  .progress-item.family {
+    border-left-color: #cc66ff;
+    color: #cc66ff;
+    background: rgba(204,102,255,0.1);
+  }
+
   .results-section {
     display: none;
   }
@@ -410,6 +416,11 @@
   .result-card.deep-chain {
     border-left: 4px solid var(--orange);
     background: linear-gradient(135deg, rgba(80,40,10,0.25), rgba(0,30,8,0.4));
+  }
+
+  .result-card.family-connected {
+    border-left: 4px solid #cc66ff;
+    background: linear-gradient(135deg, rgba(100,50,150,0.2), rgba(0,30,8,0.4));
   }
 
   .result-card:hover {
@@ -445,6 +456,11 @@
     color: #000;
   }
 
+  .card-badge.family {
+    background: #cc66ff;
+    color: #000;
+  }
+
   .depth-indicator {
     display: inline-block;
     background: rgba(255,100,0,0.3);
@@ -452,6 +468,16 @@
     padding: 2px 8px;
     font-size: 9px;
     color: #ffaa44;
+    margin-left: 10px;
+  }
+
+  .family-indicator {
+    display: inline-block;
+    background: rgba(204,102,255,0.3);
+    border: 1px solid #cc66ff;
+    padding: 2px 8px;
+    font-size: 9px;
+    color: #cc66ff;
     margin-left: 10px;
   }
 
@@ -468,6 +494,38 @@
     font-size: 11px;
     margin-bottom: 12px;
     letter-spacing: 2px;
+  }
+
+  .family-section {
+    background: rgba(204,102,255,0.1);
+    border: 1px solid #cc66ff;
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  .family-section h4 {
+    color: #cc66ff;
+    margin-bottom: 12px;
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .family-member {
+    background: rgba(0,0,0,0.3);
+    border-left: 2px solid #cc66ff;
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-size: 12px;
+  }
+
+  .ration-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
   }
 
   .map-preview {
@@ -626,12 +684,12 @@
   
   <div class="header">
     <div class="logo">G H O S T</div>
-    <div class="subtitle">AUTO DEEP SCAN OSINT TERMINAL</div>
+    <div class="subtitle">FAMILY INTELLIGENCE OSINT TERMINAL</div>
     <div class="developer-tag">
-      ⚡ DEVELOPED BY <span>Developer Saif</span> // AUTO CHAIN INTELLIGENCE ⚡
+      ⚡ DEVELOPED BY <span>Developer Saif</span> // FAMILY NETWORK INTELLIGENCE ⚡
     </div>
-    <div class="auto-deep-badge">
-      🔥 AUTO DEEP SCAN ACTIVE: Automatically follows ALL alternate numbers found 🔥
+    <div class="auto-family-badge">
+      👨‍👩‍👧‍👦 AUTO FAMILY DETECTION: When Aadhaar found → Automatically fetches Ration Card & Family Members 👨‍👩‍👧‍👦
     </div>
     <div class="storage-controls">
       <button class="storage-btn" id="save-session">💾 SAVE SESSION</button>
@@ -641,18 +699,18 @@
     </div>
   </div>
 
-  <!-- TWO MODES: Single and Batch (Both have Auto Deep Scan built-in) -->
+  <!-- TWO MODES -->
   <div class="mode-switch">
-    <button class="mode-btn active" data-mode="single">🎯 SINGLE SCAN (Auto Deep)</button>
-    <button class="mode-btn" data-mode="batch">📦 BATCH SCAN (Auto Deep)</button>
+    <button class="mode-btn active" data-mode="single">🎯 SINGLE SCAN (Auto Deep + Family)</button>
+    <button class="mode-btn" data-mode="batch">📦 BATCH SCAN (Auto Deep + Family)</button>
   </div>
 
   <div class="search-panel">
     <div class="input-row">
       <div class="input-wrapper" id="input-wrapper">
-        <textarea id="phone-input" placeholder="SINGLE MODE: Enter ONE number&#10;System will automatically follow all alternate numbers found&#10;&#10;Example: +919876543210"></textarea>
+        <textarea id="phone-input" placeholder="SINGLE MODE: Enter ONE number&#10;System will automatically:&#10;1. Find all alternate numbers (Deep Scan)&#10;2. Extract Aadhaar numbers&#10;3. Fetch complete Ration Card & Family Members&#10;&#10;Example: +919876543210"></textarea>
       </div>
-      <button class="btn-scan" id="scan-btn">⚡ START AUTO DEEP SCAN ⚡</button>
+      <button class="btn-scan" id="scan-btn">⚡ START FAMILY DEEP SCAN ⚡</button>
     </div>
 
     <div class="batch-progress" id="batch-progress">
@@ -669,7 +727,7 @@
   </div>
 
   <div class="export-buttons" id="export-buttons" style="display:none;">
-    <button class="export-btn" id="export-pdf">📄 EXPORT DEEP SCAN REPORT</button>
+    <button class="export-btn" id="export-pdf">📄 EXPORT FULL REPORT</button>
     <button class="export-btn" id="export-csv">📊 EXPORT CSV</button>
     <button class="export-btn" id="export-json">🔧 EXPORT JSON</button>
   </div>
@@ -692,22 +750,22 @@
       <div class="stat-label">TOTAL RECORDS</div>
     </div>
     <div class="stat-card">
-      <div class="stat-number" id="alternates-found">0</div>
-      <div class="stat-label">ALTERNATES FOUND</div>
+      <div class="stat-number" id="family-connections">0</div>
+      <div class="stat-label">FAMILY CONNECTIONS</div>
     </div>
   </div>
 
   <div class="results-section" id="results-section">
     <div class="results-header">
-      <h2>◉ AUTO DEEP SCAN INTELLIGENCE REPORT</h2>
+      <h2>◉ FAMILY INTELLIGENCE REPORT</h2>
       <span class="result-count" id="result-count">0 RECORDS</span>
     </div>
     <div id="results-container"></div>
   </div>
 
   <div class="footer">
-    ◈ DEVELOPED BY Developer Saif // AUTO DEEP SCAN // FOLLOWS ALL ALTERNATES ◈<br>
-    <span>⚡ SINGLE MODE & BATCH MODE BOTH HAVE AUTO CHAIN INTELLIGENCE ⚡</span>
+    ◈ DEVELOPED BY Developer Saif // FAMILY INTELLIGENCE // AUTO RATION CARD LINK ◈<br>
+    <span>⚡ AADHAAR → RATION CARD → FAMILY MEMBERS → COMPLETE NETWORK ⚡</span>
   </div>
 </div>
 
@@ -715,8 +773,8 @@
 // Storage Manager
 class StorageManager {
   constructor() {
-    this.storageKey = 'ghost_autodeep_data';
-    this.historyKey = 'ghost_autodeep_history';
+    this.storageKey = 'ghost_family_data';
+    this.historyKey = 'ghost_family_history';
     this.maxHistoryItems = 50;
   }
 
@@ -757,7 +815,7 @@ class StorageManager {
       successfulScans = session.stats.successfulScans || 0;
       maxChainDepth = session.stats.maxChainDepth || 0;
       totalRecordsFound = session.stats.totalRecordsFound || 0;
-      totalAlternatesFound = session.stats.totalAlternatesFound || 0;
+      familyConnections = session.stats.familyConnections || 0;
       updateStats();
       
       if (session.results && session.results.length > 0) {
@@ -803,7 +861,7 @@ const storage = new StorageManager();
     if (!ctx) return;
     ctx.fillStyle = 'rgba(0,8,0,0.05)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#ff6600';
+    ctx.fillStyle = '#cc66ff';
     ctx.font = fontSize + 'px Share Tech Mono';
     for (let i = 0; i < drops.length; i++) {
       const char = chars[Math.floor(Math.random() * chars.length)];
@@ -827,7 +885,7 @@ let totalScans = 0;
 let successfulScans = 0;
 let maxChainDepth = 0;
 let totalRecordsFound = 0;
-let totalAlternatesFound = 0;
+let familyConnections = 0;
 let currentMode = 'single';
 let currentResults = [];
 let scannedNumbers = new Set();
@@ -838,13 +896,12 @@ function updateStats() {
   document.getElementById('success-rate').textContent = `${successRate}%`;
   document.getElementById('chain-depth').textContent = maxChainDepth;
   document.getElementById('total-records').textContent = totalRecordsFound;
-  document.getElementById('alternates-found').textContent = totalAlternatesFound;
+  document.getElementById('family-connections').textContent = familyConnections;
 }
 
 // Mode switching
 const inputWrapper = document.getElementById('input-wrapper');
 const phoneInput = document.getElementById('phone-input');
-const scanBtn = document.getElementById('scan-btn');
 
 function setMode(mode) {
   currentMode = mode;
@@ -860,10 +917,10 @@ function setMode(mode) {
   inputWrapper.classList.add(`${mode}-mode`);
   
   if (mode === 'single') {
-    phoneInput.placeholder = "SINGLE MODE: Enter ONE number\nSystem will automatically follow all alternate numbers\n\nExample: +919876543210";
+    phoneInput.placeholder = "SINGLE MODE: Enter ONE number\nSystem will automatically:\n1. Find all alternate numbers (Deep Scan)\n2. Extract Aadhaar numbers\n3. Fetch complete Ration Card & Family Members\n\nExample: +919876543210";
     phoneInput.value = phoneInput.value.split('\n')[0];
   } else {
-    phoneInput.placeholder = "BATCH MODE: Enter one number per line (max 10)\nSystem will automatically follow all alternate numbers for EACH target\n\n+919876543210\n919876543211\n9876543212";
+    phoneInput.placeholder = "BATCH MODE: Enter one number per line (max 10)\nSystem will automatically follow all alternates AND fetch family data for each Aadhaar found\n\n+919876543210\n919876543211\n9876543212";
   }
 }
 
@@ -877,7 +934,7 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
 phoneInput.addEventListener('keypress', function(e) {
   if (e.key === 'Enter' && currentMode === 'single') {
     e.preventDefault();
-    startAutoDeepScan();
+    startFamilyDeepScan();
   }
 });
 
@@ -921,7 +978,48 @@ function getNumbersFromInput() {
   }
 }
 
-async function scanNumber(number) {
+// FAMILY API CALL - Fetch Ration Card & Family Members from Aadhaar
+async function fetchFamilyByAadhaar(aadhaarNumber, progressLog, parentNumber) {
+  const apiUrl = `https://techvishalboss.com/api/v1/lookup.php?key=TVB_FULL_52F4672E&service=aadhar_ration&aadhar=${aadhaarNumber}`;
+  
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    
+    if (data.success && data.data && data.data.members) {
+      const logLine = document.createElement('div');
+      logLine.className = 'progress-item family';
+      logLine.innerHTML = `👨‍👩‍👧‍👦 FAMILY FOUND: Aadhaar ${aadhaarNumber} linked to Ration Card ${data.ration_card_number} (${data.data.members.length} members)`;
+      progressLog.appendChild(logLine);
+      
+      familyConnections++;
+      updateStats();
+      
+      return {
+        success: true,
+        aadhaar: aadhaarNumber,
+        sourceNumber: parentNumber,
+        rationCard: data.ration_card_number,
+        cardType: data.data.card_type,
+        scheme: data.data.scheme,
+        address: data.data.address,
+        fpsName: data.data.fps_name,
+        members: data.data.members
+      };
+    } else {
+      const logLine = document.createElement('div');
+      logLine.className = 'progress-item';
+      logLine.innerHTML = `⚠️ No family data found for Aadhaar: ${aadhaarNumber}`;
+      progressLog.appendChild(logLine);
+      return { success: false, aadhaar: aadhaarNumber };
+    }
+  } catch (err) {
+    console.error('Family API error:', err);
+    return { success: false, aadhaar: aadhaarNumber, error: err.message };
+  }
+}
+
+async function scanNumber(number, progressLog) {
   const apiUrl = `https://numosintapi.vercel.app/api/lookup?mobile=${number}`;
   try {
     const response = await fetch(apiUrl);
@@ -935,12 +1033,25 @@ async function scanNumber(number) {
       
       successfulScans++;
       updateStats();
+      
+      // Extract Aadhaar numbers from records and fetch family data
+      const familyDataList = [];
+      for (let record of records) {
+        if (record.id && record.id !== 'N/A' && record.id !== 'null') {
+          const familyData = await fetchFamilyByAadhaar(record.id, progressLog, number);
+          if (familyData.success) {
+            familyDataList.push(familyData);
+          }
+        }
+      }
+      
       return { 
         success: true, 
         number: number, 
         timestamp: new Date().toISOString(),
         recordCount: records.length,
-        allRecords: records
+        allRecords: records,
+        familyData: familyDataList
       };
     } 
     else if (data && data.success && data.result) {
@@ -949,12 +1060,25 @@ async function scanNumber(number) {
       
       successfulScans++;
       updateStats();
+      
+      // Extract Aadhaar numbers from records and fetch family data
+      const familyDataList = [];
+      for (let record of records) {
+        if (record.id && record.id !== 'N/A' && record.id !== 'null') {
+          const familyData = await fetchFamilyByAadhaar(record.id, progressLog, number);
+          if (familyData.success) {
+            familyDataList.push(familyData);
+          }
+        }
+      }
+      
       return { 
         success: true, 
         number: number, 
         timestamp: new Date().toISOString(),
         recordCount: records.length,
-        allRecords: records
+        allRecords: records,
+        familyData: familyDataList
       };
     } 
     else {
@@ -964,7 +1088,8 @@ async function scanNumber(number) {
         error: 'No intelligence data found', 
         number: number,
         recordCount: 0,
-        allRecords: []
+        allRecords: [],
+        familyData: []
       };
     }
   } catch (err) {
@@ -975,7 +1100,8 @@ async function scanNumber(number) {
       error: err.message, 
       number: number,
       recordCount: 0,
-      allRecords: []
+      allRecords: [],
+      familyData: []
     };
   }
 }
@@ -1014,7 +1140,6 @@ function removeDuplicateRecords(records) {
 async function autoDeepScan(initialNumbers, progressLog) {
   const queue = [...initialNumbers];
   const resultsMap = new Map();
-  let alternatesDiscovered = 0;
   
   for (let num of initialNumbers) {
     scannedNumbers.add(num);
@@ -1029,7 +1154,7 @@ async function autoDeepScan(initialNumbers, progressLog) {
     logLine.innerHTML = `🔍 [Depth ${currentNumberDepth}] Scanning: +91 ${number}...`;
     progressLog.appendChild(logLine);
     
-    const result = await scanNumber(number);
+    const result = await scanNumber(number, progressLog);
     
     if (result.success && result.allRecords.length > 0) {
       const uniqueRecords = removeDuplicateRecords(result.allRecords);
@@ -1043,10 +1168,6 @@ async function autoDeepScan(initialNumbers, progressLog) {
       const alternates = extractAlternateNumbers(result.allRecords);
       
       if (alternates.length > 0) {
-        alternatesDiscovered += alternates.length;
-        totalAlternatesFound = alternatesDiscovered;
-        updateStats();
-        
         logLine.innerHTML = `✅ [Depth ${currentNumberDepth}] +91 ${number} - Found ${result.recordCount} record(s) + ${alternates.length} alternate(s)`;
         
         for (let alt of alternates) {
@@ -1067,7 +1188,18 @@ async function autoDeepScan(initialNumbers, progressLog) {
           }
         }
       } else {
-        logLine.innerHTML = `✅ [Depth ${currentNumberDepth}] +91 ${number} - Found ${result.recordCount} record(s) - No alternates found (chain ends)`;
+        logLine.innerHTML = `✅ [Depth ${currentNumberDepth}] +91 ${number} - Found ${result.recordCount} record(s) - No alternates found`;
+      }
+      
+      // Show family data summary if any
+      if (result.familyData && result.familyData.length > 0) {
+        for (let family of result.familyData) {
+          const familyLine = document.createElement('div');
+          familyLine.className = 'progress-item family';
+          familyLine.style.marginLeft = '20px';
+          familyLine.innerHTML = `   👨‍👩‍👧‍👦 FAMILY LINK: Aadhaar ${family.aadhaar} → Ration Card ${family.rationCard} (${family.members.length} members)`;
+          progressLog.appendChild(familyLine);
+        }
       }
     } else {
       logLine.className = 'progress-item error';
@@ -1085,10 +1217,10 @@ async function autoDeepScan(initialNumbers, progressLog) {
     }
   }
   
-  return { allResults, alternatesDiscovered };
+  return allResults;
 }
 
-async function startAutoDeepScan() {
+async function startFamilyDeepScan() {
   const numbers = getNumbersFromInput();
   
   if (numbers.length === 0) {
@@ -1104,7 +1236,7 @@ async function startAutoDeepScan() {
   scannedNumbers.clear();
   maxChainDepth = 0;
   totalRecordsFound = 0;
-  totalAlternatesFound = 0;
+  familyConnections = 0;
   updateStats();
   
   const btn = document.getElementById('scan-btn');
@@ -1113,7 +1245,7 @@ async function startAutoDeepScan() {
   const exportBtns = document.getElementById('export-buttons');
   
   btn.disabled = true;
-  btn.textContent = '⚡ AUTO DEEP SCANNING... ⚡';
+  btn.textContent = '⚡ FAMILY DEEP SCANNING... ⚡';
   progressDiv.classList.add('active');
   progressLog.innerHTML = '';
   exportBtns.style.display = 'none';
@@ -1122,20 +1254,14 @@ async function startAutoDeepScan() {
   const modeText = currentMode === 'single' ? 'SINGLE' : 'BATCH';
   const startLine = document.createElement('div');
   startLine.className = 'progress-item';
-  startLine.style.borderLeftColor = '#ff6600';
-  startLine.innerHTML = `🚀 STARTING AUTO DEEP SCAN (${modeText} MODE) ON ${numbers.length} NUMBER(S)`;
+  startLine.style.borderLeftColor = '#cc66ff';
+  startLine.innerHTML = `🚀 STARTING FAMILY DEEP SCAN (${modeText} MODE) ON ${numbers.length} NUMBER(S)`;
   progressLog.appendChild(startLine);
   
-  const initLine = document.createElement('div');
-  initLine.className = 'progress-item';
-  initLine.style.marginLeft = '20px';
-  initLine.innerHTML = `📱 Target numbers: ${numbers.map(n => `+91 ${n}`).join(', ')}`;
-  progressLog.appendChild(initLine);
-  
-  const { allResults, alternatesDiscovered } = await autoDeepScan(numbers, progressLog);
+  const allResults = await autoDeepScan(numbers, progressLog);
   
   btn.disabled = false;
-  btn.textContent = '⚡ START AUTO DEEP SCAN ⚡';
+  btn.textContent = '⚡ START FAMILY DEEP SCAN ⚡';
   
   if (allResults.length > 0) {
     currentResults = allResults;
@@ -1143,18 +1269,18 @@ async function startAutoDeepScan() {
       mode: currentMode,
       initialNumbers: numbers,
       totalScanned: allResults.length,
-      alternatesFound: alternatesDiscovered,
       maxDepth: maxChainDepth,
-      totalRecords: totalRecordsFound
+      totalRecords: totalRecordsFound,
+      familyConnections: familyConnections
     };
     renderResults(allResults, chainInfo);
     exportBtns.style.display = 'flex';
     
     const summaryLine = document.createElement('div');
     summaryLine.className = 'progress-item success';
-    summaryLine.style.borderLeftColor = '#ff6600';
+    summaryLine.style.borderLeftColor = '#cc66ff';
     summaryLine.style.marginTop = '15px';
-    summaryLine.innerHTML = `🎉 AUTO DEEP SCAN COMPLETE! Scanned ${allResults.length} numbers | Found ${totalRecordsFound} records | ${alternatesDiscovered} alternates discovered | Max depth: ${maxChainDepth}`;
+    summaryLine.innerHTML = `🎉 FAMILY DEEP SCAN COMPLETE! Scanned ${allResults.length} numbers | ${totalRecordsFound} records | ${familyConnections} family connections | Max depth: ${maxChainDepth}`;
     progressLog.appendChild(summaryLine);
   } else {
     alert('❌ No successful scans.');
@@ -1177,65 +1303,106 @@ function renderResults(results, chainInfo) {
   const summaryDiv = document.createElement('div');
   summaryDiv.className = 'chain-summary';
   summaryDiv.innerHTML = `
-    <h4>🔗 AUTO DEEP SCAN CHAIN SUMMARY (${chainInfo.mode.toUpperCase()} MODE)</h4>
+    <h4>🔗 FAMILY INTELLIGENCE SCAN SUMMARY (${chainInfo.mode.toUpperCase()} MODE)</h4>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
       <div>🎯 Initial Targets: ${chainInfo.initialNumbers.length}</div>
       <div>🔍 Total Scanned: ${chainInfo.totalScanned}</div>
-      <div>📎 Alternates Found: ${chainInfo.alternatesFound}</div>
       <div>📊 Max Chain Depth: ${chainInfo.maxDepth}</div>
       <div>📝 Total Records: ${chainInfo.totalRecords}</div>
+      <div>👨‍👩‍👧‍👦 Family Connections: ${chainInfo.familyConnections}</div>
     </div>
   `;
   container.appendChild(summaryDiv);
   
   results.forEach((result, idx) => {
     const allRecords = result.allRecords;
+    const familyDataList = result.familyData || [];
     const isDeepChain = result.depth > 0;
+    const hasFamily = familyDataList.length > 0;
     
     const card = document.createElement('div');
-    card.className = `result-card ${isDeepChain ? 'deep-chain' : ''}`;
+    card.className = `result-card ${isDeepChain ? 'deep-chain' : ''} ${hasFamily ? 'family-connected' : ''}`;
     
     card.innerHTML = `
       <div class="card-header">
         <div class="card-title">
           🎯 TARGET #${idx+1}: +91 ${result.number}
           ${result.depth > 0 ? `<span class="depth-indicator">🔗 CHAIN DEPTH: ${result.depth}</span>` : '<span class="depth-indicator">🎯 ORIGINAL TARGET</span>'}
+          ${hasFamily ? `<span class="family-indicator">👨‍👩‍👧‍👦 FAMILY CONNECTED</span>` : ''}
         </div>
-        <div class="card-badge ${isDeepChain ? 'deep' : ''}">${result.recordCount} RECORD${result.recordCount !== 1 ? 'S' : ''}</div>
+        <div class="card-badge ${isDeepChain ? 'deep' : ''} ${hasFamily ? 'family' : ''}">${result.recordCount} RECORD${result.recordCount !== 1 ? 'S' : ''}</div>
       </div>
     `;
     
     allRecords.forEach((rec, recIdx) => {
-  const subRecord = document.createElement('div');
-  subRecord.className = 'sub-record';
-  subRecord.innerHTML = `
-    <div class="sub-record-header">${result.recordCount > 1 ? `📋 RECORD #${recIdx + 1} of ${result.recordCount}` : '📋 INTELLIGENCE DATA'}</div>
-    <div class="field-grid">
-      ${rec.mobile ? `<div class="field-item"><div class="field-key">📱 MOBILE NUMBER</div><div class="field-value">${rec.mobile}</div></div>` : ''}
-      ${rec.name ? `<div class="field-item"><div class="field-key">👤 FULL NAME</div><div class="field-value">${rec.name}</div></div>` : ''}
-      ${rec.fname ? `<div class="field-item"><div class="field-key">👨 FATHER'S NAME</div><div class="field-value">${rec.fname}</div></div>` : ''}
-      ${rec.address ? `<div class="field-item"><div class="field-key">📍 ADDRESS</div><div class="field-value">${rec.address}</div></div>` : ''}
-      ${rec.alt ? `<div class="field-item"><div class="field-key">📞 ALTERNATE NUMBER</div><div class="field-value">${rec.alt}</div></div>` : ''}
-      ${rec.circle ? `<div class="field-item"><div class="field-key">📡 OPERATOR</div><div class="field-value">${rec.circle}</div></div>` : ''}
-      ${rec.id ? `<div class="field-item" style="border-left-color: #ff6600;"><div class="field-key">🆔 AADHAAR NUMBER</div><div class="field-value" style="color: #ffaa44; font-weight: bold;">${rec.id}</div></div>` : ''}
-    </div>
-    ${rec.address ? `
-      <div class="map-preview">
-        <div class="field-key">🗺️ GEOLOCATION INTELLIGENCE</div>
-        <div class="field-value">Location: ${rec.address}</div>
-        <a href="${getGoogleMapsLink(rec.address)}" target="_blank" class="map-link">📍 OPEN IN GOOGLE MAPS →</a>
-      </div>
-    ` : ''}
-  `;
-  card.appendChild(subRecord);
-});
+      const subRecord = document.createElement('div');
+      subRecord.className = 'sub-record';
+      
+      subRecord.innerHTML = `
+        <div class="sub-record-header">${result.recordCount > 1 ? `📋 RECORD #${recIdx + 1} of ${result.recordCount}` : '📋 INTELLIGENCE DATA'}</div>
+        <div class="field-grid">
+          ${rec.mobile ? `<div class="field-item"><div class="field-key">📱 MOBILE NUMBER</div><div class="field-value">${rec.mobile}</div></div>` : ''}
+          ${rec.name ? `<div class="field-item"><div class="field-key">👤 FULL NAME</div><div class="field-value">${rec.name}</div></div>` : ''}
+          ${rec.fname ? `<div class="field-item"><div class="field-key">👨 FATHER'S NAME</div><div class="field-value">${rec.fname}</div></div>` : ''}
+          ${rec.address ? `<div class="field-item"><div class="field-key">📍 ADDRESS</div><div class="field-value">${rec.address}</div></div>` : ''}
+          ${rec.alt ? `<div class="field-item"><div class="field-key">📞 ALTERNATE NUMBER</div><div class="field-value">${rec.alt}</div></div>` : ''}
+          ${rec.circle ? `<div class="field-item"><div class="field-key">📡 OPERATOR</div><div class="field-value">${rec.circle}</div></div>` : ''}
+          ${rec.id ? `<div class="field-item" style="border-left-color: #ff6600;"><div class="field-key">🆔 AADHAAR NUMBER</div><div class="field-value" style="color: #ffaa44; font-weight: bold;">${rec.id}</div></div>` : ''}
+        </div>
+        ${rec.address ? `
+          <div class="map-preview">
+            <div class="field-key">🗺️ GEOLOCATION INTELLIGENCE</div>
+            <div class="field-value">Location: ${rec.address}</div>
+            <a href="${getGoogleMapsLink(rec.address)}" target="_blank" class="map-link">📍 OPEN IN GOOGLE MAPS →</a>
+          </div>
+        ` : ''}
+      `;
+      card.appendChild(subRecord);
+    });
+    
+    // Display Family/Ration Card Data
+    if (familyDataList.length > 0) {
+      for (let family of familyDataList) {
+        const familySection = document.createElement('div');
+        familySection.className = 'family-section';
+        
+        let membersHtml = '';
+        for (let member of family.members) {
+          membersHtml += `
+            <div class="family-member">
+              <strong>${member.member_name}</strong> | ${member.relationship} | Gender: ${member.gender} | UID: ${member.uid_masked}
+            </div>
+          `;
+        }
+        
+        familySection.innerHTML = `
+          <h4>👨‍👩‍👧‍👦 RATION CARD & FAMILY INFORMATION (Aadhaar: ${family.aadhaar})</h4>
+          <div class="ration-details">
+            <div><strong>Ration Card No:</strong> ${family.rationCard}</div>
+            <div><strong>Card Type:</strong> ${family.cardType}</div>
+            <div><strong>Scheme:</strong> ${family.scheme}</div>
+            <div><strong>FPS Name:</strong> ${family.fpsName}</div>
+          </div>
+          <div class="field-item">
+            <div class="field-key">🏠 RATION CARD ADDRESS</div>
+            <div class="field-value">${family.address}</div>
+          </div>
+          <h4 style="margin-top: 12px;">👨‍👩‍👧‍👦 FAMILY MEMBERS (${family.members.length})</h4>
+          ${membersHtml}
+          ${family.address ? `
+            <a href="${getGoogleMapsLink(family.address)}" target="_blank" class="map-link" style="margin-top: 12px;">📍 VERIFY ADDRESS ON MAPS →</a>
+          ` : ''}
+        `;
+        card.appendChild(familySection);
+      }
+    }
     
     const timestamp = document.createElement('div');
     timestamp.style.marginTop = '16px';
     timestamp.style.fontSize = '9px';
     timestamp.style.color = '#448844';
     timestamp.style.textAlign = 'right';
-    timestamp.innerHTML = `🕒 ${new Date(result.timestamp).toLocaleString()} | 🔐 Developer Saif | ${result.depth > 0 ? '🔗 Auto Deep Scan Chain' : '🎯 Original Target'}`;
+    timestamp.innerHTML = `🕒 ${new Date(result.timestamp).toLocaleString()} | 🔐 Developer Saif | ${hasFamily ? '👨‍👩‍👧‍👦 Family Data Enriched' : result.depth > 0 ? '🔗 Auto Deep Scan Chain' : '🎯 Original Target'}`;
     card.appendChild(timestamp);
     
     container.appendChild(card);
@@ -1251,8 +1418,8 @@ async function generatePDF() {
   let yPos = 25;
   
   doc.setFontSize(20);
-  doc.setTextColor(255, 100, 0);
-  doc.text('GHOST AUTO DEEP SCAN REPORT', 20, yPos);
+  doc.setTextColor(204, 102, 255);
+  doc.text('GHOST FAMILY INTELLIGENCE REPORT', 20, yPos);
   yPos += 10;
   
   doc.setFontSize(10);
@@ -1261,18 +1428,18 @@ async function generatePDF() {
   yPos += 6;
   doc.text(`Date: ${new Date().toLocaleString()}`, 20, yPos);
   yPos += 6;
-  doc.text(`Mode: ${currentMode.toUpperCase()} (Auto Deep Scan)`, 20, yPos);
+  doc.text(`Mode: ${currentMode.toUpperCase()} (Family Deep Scan)`, 20, yPos);
   yPos += 6;
   doc.text(`Total Numbers Scanned: ${totalScans}`, 20, yPos);
   yPos += 6;
   doc.text(`Total Unique Records: ${totalRecordsFound}`, 20, yPos);
   yPos += 6;
-  doc.text(`Alternates Discovered: ${totalAlternatesFound}`, 20, yPos);
+  doc.text(`Family Connections: ${familyConnections}`, 20, yPos);
   yPos += 6;
   doc.text(`Max Chain Depth: ${maxChainDepth}`, 20, yPos);
   yPos += 15;
   
-  doc.setDrawColor(255, 100, 0);
+  doc.setDrawColor(204, 102, 255);
   doc.line(20, yPos, 190, yPos);
   yPos += 10;
   
@@ -1298,6 +1465,22 @@ async function generatePDF() {
       if (rec.address) { doc.text(`Address: ${rec.address}`, 25, yPos); yPos += 5; }
       if (rec.alt) { doc.text(`Alternate: ${rec.alt}`, 25, yPos); yPos += 5; }
       if (rec.circle) { doc.text(`Operator: ${rec.circle}`, 25, yPos); yPos += 5; }
+      if (rec.id) { doc.text(`Aadhaar: ${rec.id}`, 25, yPos); yPos += 5; }
+      
+      // Add family data to PDF
+      if (result.familyData && result.familyData.length > 0) {
+        yPos += 3;
+        doc.setTextColor(204, 102, 255);
+        for (let family of result.familyData) {
+          doc.text(`Ration Card: ${family.rationCard} (${family.members.length} members)`, 25, yPos);
+          yPos += 5;
+          for (let member of family.members) {
+            doc.text(`  - ${member.member_name} (${member.relationship})`, 30, yPos);
+            yPos += 4;
+          }
+        }
+        doc.setTextColor(0, 0, 0);
+      }
       
       yPos += 8;
       doc.setDrawColor(200, 200, 200);
@@ -1306,20 +1489,24 @@ async function generatePDF() {
     }
   }
   
-  doc.save(`AUTO_DEEP_SCAN_REPORT_${Date.now()}.pdf`);
+  doc.save(`FAMILY_INTELLIGENCE_REPORT_${Date.now()}.pdf`);
 }
 
 function exportCSV() {
-  let csv = "Target Number,Depth,Name,Father's Name,Address,Alternate Number,Operator\n";
+  let csv = "Target Number,Depth,Name,Father's Name,Address,Alternate Number,Operator,Aadhaar,Ration Card,Family Members\n";
   currentResults.forEach(result => {
     result.allRecords.forEach(rec => {
-      csv += `+91 ${result.number},${result.depth || 0},"${rec.name || ''}","${rec.fname || ''}","${(rec.address || '').replace(/"/g, '""')}","${rec.alt || ''}","${rec.circle || ''}"\n`;
+      let familyInfo = '';
+      if (result.familyData && result.familyData.length > 0) {
+        familyInfo = result.familyData.map(f => `${f.rationCard}|${f.members.length} members`).join(';');
+      }
+      csv += `+91 ${result.number},${result.depth || 0},"${rec.name || ''}","${rec.fname || ''}","${(rec.address || '').replace(/"/g, '""')}","${rec.alt || ''}","${rec.circle || ''}","${rec.id || ''}","${familyInfo}"\n`;
     });
   });
   const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = `AUTO_DEEP_SCAN_DATA_${Date.now()}.csv`;
+  link.download = `FAMILY_INTELLIGENCE_DATA_${Date.now()}.csv`;
   link.click();
   URL.revokeObjectURL(link.href);
 }
@@ -1329,41 +1516,40 @@ function exportJSON() {
     generated_by: "Developer Saif",
     timestamp: new Date().toISOString(),
     mode: currentMode,
-    auto_deep_scan: true,
     statistics: {
       total_scans: totalScans,
       successful_scans: successfulScans,
       max_chain_depth: maxChainDepth,
       total_records: totalRecordsFound,
-      alternates_found: totalAlternatesFound
+      family_connections: familyConnections
     },
     results: currentResults
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = `AUTO_DEEP_SCAN_JSON_${Date.now()}.json`;
+  link.download = `FAMILY_INTELLIGENCE_JSON_${Date.now()}.json`;
   link.click();
   URL.revokeObjectURL(link.href);
 }
 
 // Event Listeners
-document.getElementById('scan-btn').addEventListener('click', startAutoDeepScan);
+document.getElementById('scan-btn').addEventListener('click', startFamilyDeepScan);
 document.getElementById('export-pdf').addEventListener('click', generatePDF);
 document.getElementById('export-csv').addEventListener('click', exportCSV);
 document.getElementById('export-json').addEventListener('click', exportJSON);
 document.getElementById('save-session').addEventListener('click', () => {
-  const stats = { totalScans, successfulScans, maxChainDepth, totalRecordsFound, totalAlternatesFound };
+  const stats = { totalScans, successfulScans, maxChainDepth, totalRecordsFound, familyConnections };
   const chainInfo = {
     mode: currentMode,
     initialNumbers: getNumbersFromInput(),
     totalScanned: currentResults.length,
-    alternatesFound: totalAlternatesFound,
     maxDepth: maxChainDepth,
-    totalRecords: totalRecordsFound
+    totalRecords: totalRecordsFound,
+    familyConnections: familyConnections
   };
   storage.saveCurrentSession(stats, currentResults, currentMode, chainInfo);
-  alert('✅ Auto Deep Scan session saved!');
+  alert('✅ Family intelligence session saved!');
 });
 document.getElementById('load-session').addEventListener('click', () => {
   const session = storage.getLastSession();
@@ -1373,7 +1559,7 @@ document.getElementById('load-session').addEventListener('click', () => {
 document.getElementById('clear-history').addEventListener('click', () => {
   if (confirm('Clear all data?')) {
     storage.clearAllData();
-    totalScans = successfulScans = maxChainDepth = totalRecordsFound = totalAlternatesFound = 0;
+    totalScans = successfulScans = maxChainDepth = totalRecordsFound = familyConnections = 0;
     currentResults = [];
     scannedNumbers.clear();
     updateStats();
@@ -1391,7 +1577,7 @@ document.getElementById('show-history').addEventListener('click', () => {
     list.innerHTML = history.map(s => `
       <div class="history-item" data-id="${s.id}">
         <div><strong>📅 ${new Date(s.timestamp).toLocaleString()}</strong></div>
-        <div>🎯 Mode: ${s.mode.toUpperCase()} | 📊 Records: ${s.stats.totalRecordsFound} | 🔗 Depth: ${s.stats.maxChainDepth}</div>
+        <div>🎯 Mode: ${s.mode.toUpperCase()} | 📊 Records: ${s.stats.totalRecordsFound} | 👨‍👩‍👧‍👦 Family: ${s.stats.familyConnections}</div>
       </div>
     `).join('');
     document.querySelectorAll('.history-item').forEach(item => {
@@ -1415,16 +1601,16 @@ setMode('single');
 window.addEventListener('load', () => {
   const last = storage.getLastSession();
   if (last && last.results?.length) {
-    if (confirm('Load last auto deep scan session?')) {
+    if (confirm('Load last family intelligence session?')) {
       storage.loadSession(last);
     }
   }
   updateStats();
 });
 
-console.log('%c🔥 AUTO DEEP SCAN ACTIVE | Developer Saif 🔥', 'color: #ff6600; font-size: 14px; font-weight: bold;');
-console.log('%c🔗 BOTH SINGLE AND BATCH MODES AUTOMATICALLY FOLLOW ALTERNATE NUMBERS', 'color: #ffaa44; font-size: 12px;');
-console.log('%c⚡ SCAN ONE NUMBER - GET ENTIRE CONNECTION NETWORK', 'color: #44ff88; font-size: 12px;');
+console.log('%c🔥 FAMILY INTELLIGENCE ACTIVE | Developer Saif 🔥', 'color: #cc66ff; font-size: 14px; font-weight: bold;');
+console.log('%c👨‍👩‍👧‍👦 AUTO FAMILY DETECTION: Aadhaar → Ration Card → Complete Family Network', 'color: #ffaa44; font-size: 12px;');
+console.log('%c⚡ Single & Batch modes both automatically fetch family data when Aadhaar is found', 'color: #44ff88; font-size: 12px;');
 </script>
 </body>
 </html>
