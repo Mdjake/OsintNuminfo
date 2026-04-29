@@ -978,19 +978,42 @@ function getNumbersFromInput() {
   }
 }
 
-// FAMILY API CALL - Fetch Ration Card & Family Members from Aadhaar
+// FIXED FAMILY API CALL - Replace the fetchFamilyByAadhaar function with this:
+
 async function fetchFamilyByAadhaar(aadhaarNumber, progressLog, parentNumber) {
+  // Fixed API URL with correct parameters
   const apiUrl = `https://techvishalboss.com/api/v1/lookup.php?key=TVB_FULL_52F4672E&service=aadhar_ration&aadhar=${aadhaarNumber}`;
   
+  console.log(`🔍 Fetching family data for Aadhaar: ${aadhaarNumber}`);
+  
   try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
     
-    if (data.success && data.data && data.data.members) {
+    const response = await fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    console.log('Family API Response:', data);
+    
+    // Check for successful response with data
+    if (data && data.success === true && data.data && data.data.members && Array.isArray(data.data.members)) {
       const logLine = document.createElement('div');
       logLine.className = 'progress-item family';
-      logLine.innerHTML = `👨‍👩‍👧‍👦 FAMILY FOUND: Aadhaar ${aadhaarNumber} linked to Ration Card ${data.ration_card_number} (${data.data.members.length} members)`;
-      progressLog.appendChild(logLine);
+      logLine.innerHTML = `✅ FAMILY FOUND: Aadhaar ${aadhaarNumber} → Ration Card ${data.ration_card_number || 'N/A'} (${data.data.members.length} family members)`;
+      if (progressLog) progressLog.appendChild(logLine);
       
       familyConnections++;
       updateStats();
@@ -999,23 +1022,40 @@ async function fetchFamilyByAadhaar(aadhaarNumber, progressLog, parentNumber) {
         success: true,
         aadhaar: aadhaarNumber,
         sourceNumber: parentNumber,
-        rationCard: data.ration_card_number,
-        cardType: data.data.card_type,
-        scheme: data.data.scheme,
-        address: data.data.address,
-        fpsName: data.data.fps_name,
-        members: data.data.members
+        rationCard: data.ration_card_number || 'N/A',
+        cardType: data.data.card_type || 'N/A',
+        scheme: data.data.scheme || 'N/A',
+        issueDate: data.data.issue_date || 'N/A',
+        state: data.data.state || 'N/A',
+        district: data.data.district || 'N/A',
+        address: data.data.address || 'N/A',
+        fpsCode: data.data.fps_code || 'N/A',
+        fpsName: data.data.fps_name || 'N/A',
+        members: data.data.members || []
       };
-    } else {
+    } 
+    else if (data && data.status === 'error') {
+      const logLine = document.createElement('div');
+      logLine.className = 'progress-item';
+      logLine.innerHTML = `⚠️ Family API Error for Aadhaar ${aadhaarNumber}: ${data.message || 'No data found'}`;
+      if (progressLog) progressLog.appendChild(logLine);
+      return { success: false, aadhaar: aadhaarNumber, error: data.message };
+    }
+    else {
       const logLine = document.createElement('div');
       logLine.className = 'progress-item';
       logLine.innerHTML = `⚠️ No family data found for Aadhaar: ${aadhaarNumber}`;
-      progressLog.appendChild(logLine);
-      return { success: false, aadhaar: aadhaarNumber };
+      if (progressLog) progressLog.appendChild(logLine);
+      return { success: false, aadhaar: aadhaarNumber, error: 'No data' };
     }
-  } catch (err) {
-    console.error('Family API error:', err);
-    return { success: false, aadhaar: aadhaarNumber, error: err.message };
+    
+  } catch (error) {
+    console.error('Family API Error:', error);
+    const logLine = document.createElement('div');
+    logLine.className = 'progress-item error';
+    logLine.innerHTML = `❌ Family API failed for Aadhaar ${aadhaarNumber}: ${error.message}`;
+    if (progressLog) progressLog.appendChild(logLine);
+    return { success: false, aadhaar: aadhaarNumber, error: error.message };
   }
 }
 
@@ -1034,13 +1074,21 @@ async function scanNumber(number, progressLog) {
       successfulScans++;
       updateStats();
       
-      // Extract Aadhaar numbers from records and fetch family data
+      // Extract Aadhaar numbers and fetch family data
       const familyDataList = [];
+      const processedAadhaars = new Set();
+      
       for (let record of records) {
-        if (record.id && record.id !== 'N/A' && record.id !== 'null') {
-          const familyData = await fetchFamilyByAadhaar(record.id, progressLog, number);
-          if (familyData.success) {
-            familyDataList.push(familyData);
+        if (record.id && record.id !== 'N/A' && record.id !== 'null' && record.id.length > 5) {
+          // Avoid duplicate Aadhaar fetches
+          if (!processedAadhaars.has(record.id)) {
+            processedAadhaars.add(record.id);
+            const familyData = await fetchFamilyByAadhaar(record.id, progressLog, number);
+            if (familyData.success) {
+              familyDataList.push(familyData);
+            }
+            // Small delay to avoid rate limiting
+            await new Promise(resolve => setTimeout(resolve, 500));
           }
         }
       }
@@ -1061,13 +1109,19 @@ async function scanNumber(number, progressLog) {
       successfulScans++;
       updateStats();
       
-      // Extract Aadhaar numbers from records and fetch family data
+      // Extract Aadhaar numbers and fetch family data
       const familyDataList = [];
+      const processedAadhaars = new Set();
+      
       for (let record of records) {
-        if (record.id && record.id !== 'N/A' && record.id !== 'null') {
-          const familyData = await fetchFamilyByAadhaar(record.id, progressLog, number);
-          if (familyData.success) {
-            familyDataList.push(familyData);
+        if (record.id && record.id !== 'N/A' && record.id !== 'null' && record.id.length > 5) {
+          if (!processedAadhaars.has(record.id)) {
+            processedAadhaars.add(record.id);
+            const familyData = await fetchFamilyByAadhaar(record.id, progressLog, number);
+            if (familyData.success) {
+              familyDataList.push(familyData);
+            }
+            await new Promise(resolve => setTimeout(resolve, 500));
           }
         }
       }
@@ -1093,6 +1147,7 @@ async function scanNumber(number, progressLog) {
       };
     }
   } catch (err) {
+    console.error('Scan error:', err);
     totalScans++;
     updateStats();
     return { 
@@ -1291,111 +1346,58 @@ function getGoogleMapsLink(address) {
   if (!address || address === 'N/A' || address === 'null' || address === '') return null;
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
+// In renderResults function, replace the family section rendering with:
 
-function renderResults(results, chainInfo) {
-  const container = document.getElementById('results-container');
-  const section = document.getElementById('results-section');
-  const countEl = document.getElementById('result-count');
-  
-  container.innerHTML = '';
-  countEl.textContent = `${totalRecordsFound} UNIQUE RECORD${totalRecordsFound !== 1 ? 'S' : ''}`;
-  
-  const summaryDiv = document.createElement('div');
-  summaryDiv.className = 'chain-summary';
-  summaryDiv.innerHTML = `
-    <h4>🔗 FAMILY INTELLIGENCE SCAN SUMMARY (${chainInfo.mode.toUpperCase()} MODE)</h4>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
-      <div>🎯 Initial Targets: ${chainInfo.initialNumbers.length}</div>
-      <div>🔍 Total Scanned: ${chainInfo.totalScanned}</div>
-      <div>📊 Max Chain Depth: ${chainInfo.maxDepth}</div>
-      <div>📝 Total Records: ${chainInfo.totalRecords}</div>
-      <div>👨‍👩‍👧‍👦 Family Connections: ${chainInfo.familyConnections}</div>
-    </div>
-  `;
-  container.appendChild(summaryDiv);
-  
-  results.forEach((result, idx) => {
-    const allRecords = result.allRecords;
-    const familyDataList = result.familyData || [];
-    const isDeepChain = result.depth > 0;
-    const hasFamily = familyDataList.length > 0;
+if (familyDataList && familyDataList.length > 0) {
+  for (let family of familyDataList) {
+    if (!family.success) continue;
     
-    const card = document.createElement('div');
-    card.className = `result-card ${isDeepChain ? 'deep-chain' : ''} ${hasFamily ? 'family-connected' : ''}`;
+    const familySection = document.createElement('div');
+    familySection.className = 'family-section';
     
-    card.innerHTML = `
-      <div class="card-header">
-        <div class="card-title">
-          🎯 TARGET #${idx+1}: +91 ${result.number}
-          ${result.depth > 0 ? `<span class="depth-indicator">🔗 CHAIN DEPTH: ${result.depth}</span>` : '<span class="depth-indicator">🎯 ORIGINAL TARGET</span>'}
-          ${hasFamily ? `<span class="family-indicator">👨‍👩‍👧‍👦 FAMILY CONNECTED</span>` : ''}
-        </div>
-        <div class="card-badge ${isDeepChain ? 'deep' : ''} ${hasFamily ? 'family' : ''}">${result.recordCount} RECORD${result.recordCount !== 1 ? 'S' : ''}</div>
-      </div>
-    `;
-    
-    allRecords.forEach((rec, recIdx) => {
-      const subRecord = document.createElement('div');
-      subRecord.className = 'sub-record';
-      
-      subRecord.innerHTML = `
-        <div class="sub-record-header">${result.recordCount > 1 ? `📋 RECORD #${recIdx + 1} of ${result.recordCount}` : '📋 INTELLIGENCE DATA'}</div>
-        <div class="field-grid">
-          ${rec.mobile ? `<div class="field-item"><div class="field-key">📱 MOBILE NUMBER</div><div class="field-value">${rec.mobile}</div></div>` : ''}
-          ${rec.name ? `<div class="field-item"><div class="field-key">👤 FULL NAME</div><div class="field-value">${rec.name}</div></div>` : ''}
-          ${rec.fname ? `<div class="field-item"><div class="field-key">👨 FATHER'S NAME</div><div class="field-value">${rec.fname}</div></div>` : ''}
-          ${rec.address ? `<div class="field-item"><div class="field-key">📍 ADDRESS</div><div class="field-value">${rec.address}</div></div>` : ''}
-          ${rec.alt ? `<div class="field-item"><div class="field-key">📞 ALTERNATE NUMBER</div><div class="field-value">${rec.alt}</div></div>` : ''}
-          ${rec.circle ? `<div class="field-item"><div class="field-key">📡 OPERATOR</div><div class="field-value">${rec.circle}</div></div>` : ''}
-          ${rec.id ? `<div class="field-item" style="border-left-color: #ff6600;"><div class="field-key">🆔 AADHAAR NUMBER</div><div class="field-value" style="color: #ffaa44; font-weight: bold;">${rec.id}</div></div>` : ''}
-        </div>
-        ${rec.address ? `
-          <div class="map-preview">
-            <div class="field-key">🗺️ GEOLOCATION INTELLIGENCE</div>
-            <div class="field-value">Location: ${rec.address}</div>
-            <a href="${getGoogleMapsLink(rec.address)}" target="_blank" class="map-link">📍 OPEN IN GOOGLE MAPS →</a>
+    let membersHtml = '';
+    if (family.members && family.members.length > 0) {
+      for (let member of family.members) {
+        membersHtml += `
+          <div class="family-member">
+            <strong>${escapeHtml(member.member_name || 'N/A')}</strong> 
+            | ${escapeHtml(member.relationship || 'N/A')} 
+            | Gender: ${escapeHtml(member.gender || 'N/A')} 
+            | UID: ${escapeHtml(member.uid_masked || 'N/A')}
+            | EKYC: ${escapeHtml(member.ekyc_status || 'N/A')}
           </div>
-        ` : ''}
-      `;
-      card.appendChild(subRecord);
-    });
-    
-    // Display Family/Ration Card Data
-    if (familyDataList.length > 0) {
-      for (let family of familyDataList) {
-        const familySection = document.createElement('div');
-        familySection.className = 'family-section';
-        
-        let membersHtml = '';
-        for (let member of family.members) {
-          membersHtml += `
-            <div class="family-member">
-              <strong>${member.member_name}</strong> | ${member.relationship} | Gender: ${member.gender} | UID: ${member.uid_masked}
-            </div>
-          `;
-        }
-        
-        familySection.innerHTML = `
-          <h4>👨‍👩‍👧‍👦 RATION CARD & FAMILY INFORMATION (Aadhaar: ${family.aadhaar})</h4>
-          <div class="ration-details">
-            <div><strong>Ration Card No:</strong> ${family.rationCard}</div>
-            <div><strong>Card Type:</strong> ${family.cardType}</div>
-            <div><strong>Scheme:</strong> ${family.scheme}</div>
-            <div><strong>FPS Name:</strong> ${family.fpsName}</div>
-          </div>
-          <div class="field-item">
-            <div class="field-key">🏠 RATION CARD ADDRESS</div>
-            <div class="field-value">${family.address}</div>
-          </div>
-          <h4 style="margin-top: 12px;">👨‍👩‍👧‍👦 FAMILY MEMBERS (${family.members.length})</h4>
-          ${membersHtml}
-          ${family.address ? `
-            <a href="${getGoogleMapsLink(family.address)}" target="_blank" class="map-link" style="margin-top: 12px;">📍 VERIFY ADDRESS ON MAPS →</a>
-          ` : ''}
         `;
-        card.appendChild(familySection);
       }
+    } else {
+      membersHtml = '<div class="family-member">No family members data available</div>';
     }
+    
+    familySection.innerHTML = `
+      <h4>👨‍👩‍👧‍👦 RATION CARD & FAMILY INFORMATION</h4>
+      <div class="ration-details">
+        <div><strong>🔑 Aadhaar:</strong> ${escapeHtml(family.aadhaar)}</div>
+        <div><strong>🎫 Ration Card No:</strong> ${escapeHtml(family.rationCard)}</div>
+        <div><strong>📇 Card Type:</strong> ${escapeHtml(family.cardType)}</div>
+        <div><strong>📋 Scheme:</strong> ${escapeHtml(family.scheme)}</div>
+        <div><strong>📅 Issue Date:</strong> ${escapeHtml(family.issueDate)}</div>
+        <div><strong>🏢 FPS Name:</strong> ${escapeHtml(family.fpsName)}</div>
+        <div><strong>📌 FPS Code:</strong> ${escapeHtml(family.fpsCode)}</div>
+        <div><strong>📍 State:</strong> ${escapeHtml(family.state)}</div>
+        <div><strong>🗺️ District:</strong> ${escapeHtml(family.district)}</div>
+      </div>
+      <div class="field-item">
+        <div class="field-key">🏠 RATION CARD ADDRESS</div>
+        <div class="field-value">${escapeHtml(family.address)}</div>
+      </div>
+      <h4 style="margin-top: 16px;">👨‍👩‍👧‍👦 FAMILY MEMBERS (${family.members ? family.members.length : 0})</h4>
+      ${membersHtml}
+      ${family.address && family.address !== 'N/A' ? `
+        <a href="${getGoogleMapsLink(family.address)}" target="_blank" class="map-link" style="margin-top: 16px; display: inline-block;">📍 VERIFY ADDRESS ON MAPS →</a>
+      ` : ''}
+    `;
+    card.appendChild(familySection);
+  }
+}
     
     const timestamp = document.createElement('div');
     timestamp.style.marginTop = '16px';
