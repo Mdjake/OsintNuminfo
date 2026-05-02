@@ -134,22 +134,6 @@ function lockPage() {
     `<p style="font-size:1.2rem">⛔ SESSION TERMINATED</p></body>`;
 }
 
-// ================== CSP ==================
-
-function injectCSP() {
-  const meta = document.createElement("meta");
-  meta.httpEquiv = "Content-Security-Policy";
-  meta.content = [
-    "default-src 'self'",
-    "script-src 'self'",
-    "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data:",
-    "connect-src 'none'",
-    "object-src 'none'",
-    "base-uri 'self'",
-  ].join("; ");
-  document.head.prepend(meta);
-}
 
 // ================== AUTH UI ==================
 
