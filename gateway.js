@@ -147,18 +147,7 @@ function hardenDevTools() {
   })();
 
   // 2. Window size heuristic (docked DevTools)
-  const THRESHOLD = 160;
-  let blurred = false;
-  setInterval(() => {
-    const widthDiff  = window.outerWidth  - window.innerWidth;
-    const heightDiff = window.outerHeight - window.innerHeight;
-    if (widthDiff > THRESHOLD || heightDiff > THRESHOLD) {
-      if (!blurred) {
-        blurred = true;
-        lockPage("DevTools detected");
-      }
-    }
-  }, 1000);
+
 
   // 3. Console timing detection
   const d = Object.getOwnPropertyDescriptor(console, "log");
