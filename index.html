@@ -221,7 +221,7 @@
   }
 
   .search-panel::before {
-    content: '⚡ AUTO DEEP SCAN ENGINE // TELEGRAM USERNAME/ID TO PHONE ⚡';
+    content: '⚡ AUTO DEEP SCAN ENGINE // FOLLOWS ALL ALTERNATES ⚡';
     position: absolute;
     top: -12px;
     left: 20px;
@@ -611,6 +611,9 @@
 </head>
 <body>
 
+<!-- PASSWORD GATEWAY - CONTENT HIDDEN UNTIL VERIFIED -->
+<div id="terminal-content" style="display: none;">
+
 <canvas id="matrix-bg"></canvas>
 <div class="container">
   <div class="ascii-header">
@@ -628,10 +631,10 @@
     <div class="logo">G H O S T</div>
     <div class="subtitle">AUTO DEEP SCAN OSINT TERMINAL</div>
     <div class="developer-tag">
-      ⚡ DEVELOPED BY <span>Developer Saif</span> // TELEGRAM USERNAME/ID TO PHONE ⚡
+      ⚡ DEVELOPED BY <span>Developer Saif</span> // AUTO CHAIN INTELLIGENCE ⚡
     </div>
     <div class="auto-deep-badge">
-      🔥 TELEGRAM CONVERTER ACTIVE: Convert @username or ID to phone number then auto deep scan 🔥
+      🔥 AUTO DEEP SCAN ACTIVE: Automatically follows ALL alternate numbers found 🔥
     </div>
     <div class="storage-controls">
       <button class="storage-btn" id="save-session">💾 SAVE SESSION</button>
@@ -641,17 +644,18 @@
     </div>
   </div>
 
+  <!-- TWO MODES: Single and Batch (Both have Auto Deep Scan built-in) -->
   <div class="mode-switch">
-    <button class="mode-btn active" data-mode="single">🎯 SINGLE SCAN (Telegram/Phone)</button>
-    <button class="mode-btn" data-mode="batch">📦 BATCH SCAN (Telegram/Phone)</button>
+    <button class="mode-btn active" data-mode="single">🎯 SINGLE SCAN (Auto Deep)</button>
+    <button class="mode-btn" data-mode="batch">📦 BATCH SCAN (Auto Deep)</button>
   </div>
 
   <div class="search-panel">
     <div class="input-row">
       <div class="input-wrapper" id="input-wrapper">
-        <textarea id="phone-input" placeholder="SINGLE MODE: Enter Telegram username, ID, or phone number&#10;System automatically converts @username or numeric ID to phone number then deep scans&#10;&#10;Examples:&#10;  @username&#10;  123456789 (Telegram ID)&#10;  +919876543210 (Phone number)"></textarea>
+        <textarea id="phone-input" placeholder="SINGLE MODE: Enter ONE number&#10;System will automatically follow all alternate numbers found&#10;&#10;Example: +919876543210"></textarea>
       </div>
-      <button class="btn-scan" id="scan-btn">⚡ CONVERT & DEEP SCAN ⚡</button>
+      <button class="btn-scan" id="scan-btn">⚡ START AUTO DEEP SCAN ⚡</button>
     </div>
 
     <div class="batch-progress" id="batch-progress">
@@ -705,106 +709,15 @@
   </div>
 
   <div class="footer">
-    ◈ DEVELOPED BY Developer Saif // TELEGRAM TO PHONE CONVERTER + AUTO DEEP SCAN ◈<br>
-    <span>⚡ SUPPORTS: @username | Telegram numeric ID | Phone number ⚡</span>
+    ◈ DEVELOPED BY Developer Saif // AUTO DEEP SCAN // FOLLOWS ALL ALTERNATES ◈<br>
+    <span>⚡ SINGLE MODE & BATCH MODE BOTH HAVE AUTO CHAIN INTELLIGENCE ⚡</span>
   </div>
 </div>
 
+</div> <!-- Close terminal-content -->
+
 <script>
-// ==================== TELEGRAM TO PHONE NUMBER API ====================
-const TELEGRAM_API_URL = 'https://ayaanmods.site/sms.php';
-
-async function telegramToNumber(input) {
-    // Remove @ if present
-    let cleanInput = input.trim();
-    if (cleanInput.startsWith('@')) {
-        cleanInput = cleanInput.substring(1);
-    }
-    
-    const url = `${TELEGRAM_API_URL}?key=annonymoussms&term=${encodeURIComponent(cleanInput)}`;
-    
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.success && data.result && data.result.success && data.result.number) {
-            // Extract the phone number from API response
-            let rawNumber = data.result.number;
-            // Clean to 10 digits
-            let cleaned = rawNumber.replace(/\D/g, '');
-            if (cleaned.startsWith('91') && cleaned.length === 12) {
-                cleaned = cleaned.substring(2);
-            }
-            if (cleaned.startsWith('0')) {
-                cleaned = cleaned.substring(1);
-            }
-            if (cleaned.length === 10) {
-                return {
-                    success: true,
-                    number: cleaned,
-                    original: input,
-                    tg_id: data.result.tg_id,
-                    country: data.result.country,
-                    country_code: data.result.country_code,
-                    raw: data
-                };
-            }
-        }
-        return { success: false, error: 'Could not extract phone number from Telegram input' };
-    } catch (err) {
-        return { success: false, error: err.message };
-    }
-}
-
-function isTelegramInput(input) {
-    const trimmed = input.trim();
-    // Check if it's a valid phone number pattern (10 digits, with or without +91)
-    const phonePattern = /^(\+?91)?[0-9]{10}$/;
-    if (phonePattern.test(trimmed.replace(/\s/g, ''))) {
-        return false;
-    }
-    // Check if it's just 10 digits
-    const digitsOnly = trimmed.replace(/\D/g, '');
-    if (digitsOnly.length === 10) {
-        return false;
-    }
-    return true;
-}
-
-async function resolveInputToNumber(input, progressLog, depth = 0) {
-    const trimmed = input.trim();
-    
-    // Check if it's a phone number directly
-    const digitsOnly = trimmed.replace(/\D/g, '');
-    if (digitsOnly.length === 10) {
-        return { success: true, number: digitsOnly, original: input, isDirect: true };
-    }
-    if (digitsOnly.length === 12 && digitsOnly.startsWith('91')) {
-        return { success: true, number: digitsOnly.substring(2), original: input, isDirect: true };
-    }
-    
-    // It's a Telegram username or ID - convert it
-    const logLine = document.createElement('div');
-    logLine.className = 'progress-item deep';
-    logLine.innerHTML = `🔄 [Telegram Converter] Converting "${trimmed}" to phone number...`;
-    if (progressLog) progressLog.appendChild(logLine);
-    
-    const result = await telegramToNumber(trimmed);
-    
-    if (result.success && progressLog) {
-        logLine.innerHTML = `✅ [Telegram Converter] "${trimmed}" → +91 ${result.number} (${result.country || 'Unknown'})`;
-        logLine.className = 'progress-item success';
-    } else if (!result.success && progressLog) {
-        logLine.innerHTML = `❌ [Telegram Converter] Failed: ${result.error}`;
-        logLine.className = 'progress-item error';
-    }
-    
-    if (progressLog) progressLog.scrollTop = progressLog.scrollHeight;
-    
-    return result;
-}
-
-// ==================== Storage Manager ====================
+// Storage Manager
 class StorageManager {
   constructor() {
     this.storageKey = 'ghost_autodeep_data';
@@ -956,10 +869,10 @@ function setMode(mode) {
   inputWrapper.classList.add(`${mode}-mode`);
   
   if (mode === 'single') {
-    phoneInput.placeholder = "SINGLE MODE: Enter Telegram username, ID, or phone number\nSystem automatically converts @username or ID to phone number\n\nExamples:\n  @username\n  123456789 (Telegram ID)\n  +919876543210";
+    phoneInput.placeholder = "SINGLE MODE: Enter ONE number\nSystem will automatically follow all alternate numbers\n\nExample: +919876543210";
     phoneInput.value = phoneInput.value.split('\n')[0];
   } else {
-    phoneInput.placeholder = "BATCH MODE: Enter one per line (max 10)\nSupports @username, Telegram ID, or phone number\n\n@username1\n123456789\n+919876543210";
+    phoneInput.placeholder = "BATCH MODE: Enter one number per line (max 10)\nSystem will automatically follow all alternate numbers for EACH target\n\n+919876543210\n919876543211\n9876543212";
   }
 }
 
@@ -998,42 +911,23 @@ function sanitizePhoneNumber(input) {
   return cleaned.length === 10 ? cleaned : null;
 }
 
-async function getNumbersFromInput(progressLog) {
+function getNumbersFromInput() {
   const rawInput = phoneInput.value;
-  const results = [];
-  
   if (currentMode === 'single') {
     const firstLine = rawInput.split('\n')[0].trim();
-    if (!firstLine) return [];
-    
-    const resolved = await resolveInputToNumber(firstLine, progressLog);
-    if (resolved.success && resolved.number) {
-      results.push(resolved.number);
-    } else if (!resolved.success && progressLog) {
-      const errLine = document.createElement('div');
-      errLine.className = 'progress-item error';
-      errLine.innerHTML = `❌ Failed to resolve "${firstLine}": ${resolved.error}`;
-      progressLog.appendChild(errLine);
-    }
+    const num = sanitizePhoneNumber(firstLine);
+    return num ? [num] : [];
   } else {
     const lines = rawInput.split('\n');
-    for (let i = 0; i < Math.min(lines.length, 10); i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
-      
-      const resolved = await resolveInputToNumber(line, progressLog);
-      if (resolved.success && resolved.number) {
-        results.push(resolved.number);
-      } else if (progressLog) {
-        const errLine = document.createElement('div');
-        errLine.className = 'progress-item error';
-        errLine.innerHTML = `❌ Failed to resolve "${line}": ${resolved.error}`;
-        progressLog.appendChild(errLine);
+    const numbers = [];
+    for (let line of lines) {
+      const num = sanitizePhoneNumber(line);
+      if (num && numbers.length < 10) {
+        numbers.push(num);
       }
     }
+    return numbers;
   }
-  
-  return results;
 }
 
 async function scanNumber(number) {
@@ -1204,50 +1098,47 @@ async function autoDeepScan(initialNumbers, progressLog) {
 }
 
 async function startAutoDeepScan() {
+  const numbers = getNumbersFromInput();
+  
+  if (numbers.length === 0) {
+    alert('❌ ERROR: No valid numbers found.');
+    return;
+  }
+  
+  if (currentMode === 'batch' && numbers.length > 10) {
+    alert('❌ ERROR: Maximum 10 numbers allowed in batch mode.');
+    return;
+  }
+  
+  scannedNumbers.clear();
+  maxChainDepth = 0;
+  totalRecordsFound = 0;
+  totalAlternatesFound = 0;
+  updateStats();
+  
   const btn = document.getElementById('scan-btn');
   const progressDiv = document.getElementById('batch-progress');
   const progressLog = document.getElementById('progress-log');
   const exportBtns = document.getElementById('export-buttons');
   
   btn.disabled = true;
-  btn.textContent = '⚡ RESOLVING & DEEP SCANNING... ⚡';
+  btn.textContent = '⚡ AUTO DEEP SCANNING... ⚡';
   progressDiv.classList.add('active');
   progressLog.innerHTML = '';
   exportBtns.style.display = 'none';
   document.getElementById('results-section').classList.remove('visible');
   
-  scannedNumbers.clear();
-  maxChainDepth = 0;
-  totalRecordsFound = 0;
-  totalAlternatesFound = 0;
-  totalScans = 0;
-  successfulScans = 0;
-  updateStats();
-  
   const modeText = currentMode === 'single' ? 'SINGLE' : 'BATCH';
   const startLine = document.createElement('div');
   startLine.className = 'progress-item';
   startLine.style.borderLeftColor = '#ff6600';
-  startLine.innerHTML = `🚀 STARTING TELEGRAM/PHONE CONVERSION + AUTO DEEP SCAN (${modeText} MODE)`;
+  startLine.innerHTML = `🚀 STARTING AUTO DEEP SCAN (${modeText} MODE) ON ${numbers.length} NUMBER(S)`;
   progressLog.appendChild(startLine);
-  
-  // Convert all inputs to phone numbers first
-  const numbers = await getNumbersFromInput(progressLog);
-  
-  if (numbers.length === 0) {
-    const errLine = document.createElement('div');
-    errLine.className = 'progress-item error';
-    errLine.innerHTML = '❌ No valid numbers could be resolved from input.';
-    progressLog.appendChild(errLine);
-    btn.disabled = false;
-    btn.textContent = '⚡ START AUTO DEEP SCAN ⚡';
-    return;
-  }
   
   const initLine = document.createElement('div');
   initLine.className = 'progress-item';
   initLine.style.marginLeft = '20px';
-  initLine.innerHTML = `📱 Resolved phone numbers: ${numbers.map(n => `+91 ${n}`).join(', ')}`;
+  initLine.innerHTML = `📱 Target numbers: ${numbers.map(n => `+91 ${n}`).join(', ')}`;
   progressLog.appendChild(initLine);
   
   const { allResults, alternatesDiscovered } = await autoDeepScan(numbers, progressLog);
@@ -1272,7 +1163,7 @@ async function startAutoDeepScan() {
     summaryLine.className = 'progress-item success';
     summaryLine.style.borderLeftColor = '#ff6600';
     summaryLine.style.marginTop = '15px';
-    summaryLine.innerHTML = `🎉 SCAN COMPLETE! Scanned ${allResults.length} numbers | Found ${totalRecordsFound} records | ${alternatesDiscovered} alternates | Max depth: ${maxChainDepth}`;
+    summaryLine.innerHTML = `🎉 AUTO DEEP SCAN COMPLETE! Scanned ${allResults.length} numbers | Found ${totalRecordsFound} records | ${alternatesDiscovered} alternates discovered | Max depth: ${maxChainDepth}`;
     progressLog.appendChild(summaryLine);
   } else {
     alert('❌ No successful scans.');
@@ -1324,29 +1215,29 @@ function renderResults(results, chainInfo) {
     `;
     
     allRecords.forEach((rec, recIdx) => {
-      const subRecord = document.createElement('div');
-      subRecord.className = 'sub-record';
-      subRecord.innerHTML = `
-        <div class="sub-record-header">${result.recordCount > 1 ? `📋 RECORD #${recIdx + 1} of ${result.recordCount}` : '📋 INTELLIGENCE DATA'}</div>
-        <div class="field-grid">
-          ${rec.mobile ? `<div class="field-item"><div class="field-key">📱 MOBILE NUMBER</div><div class="field-value">${rec.mobile}</div></div>` : ''}
-          ${rec.name ? `<div class="field-item"><div class="field-key">👤 FULL NAME</div><div class="field-value">${rec.name}</div></div>` : ''}
-          ${rec.fname ? `<div class="field-item"><div class="field-key">👨 FATHER'S NAME</div><div class="field-value">${rec.fname}</div></div>` : ''}
-          ${rec.address ? `<div class="field-item"><div class="field-key">📍 ADDRESS</div><div class="field-value">${rec.address}</div></div>` : ''}
-          ${rec.alt ? `<div class="field-item"><div class="field-key">📞 ALTERNATE NUMBER</div><div class="field-value">${rec.alt}</div></div>` : ''}
-          ${rec.circle ? `<div class="field-item"><div class="field-key">📡 OPERATOR</div><div class="field-value">${rec.circle}</div></div>` : ''}
-          ${rec.id ? `<div class="field-item" style="border-left-color: #ff6600;"><div class="field-key">🆔 AADHAAR NUMBER</div><div class="field-value" style="color: #ffaa44; font-weight: bold;">${rec.id}</div></div>` : ''}
-        </div>
-        ${rec.address ? `
-          <div class="map-preview">
-            <div class="field-key">🗺️ GEOLOCATION INTELLIGENCE</div>
-            <div class="field-value">Location: ${rec.address}</div>
-            <a href="${getGoogleMapsLink(rec.address)}" target="_blank" class="map-link">📍 OPEN IN GOOGLE MAPS →</a>
-          </div>
-        ` : ''}
-      `;
-      card.appendChild(subRecord);
-    });
+  const subRecord = document.createElement('div');
+  subRecord.className = 'sub-record';
+  subRecord.innerHTML = `
+    <div class="sub-record-header">${result.recordCount > 1 ? `📋 RECORD #${recIdx + 1} of ${result.recordCount}` : '📋 INTELLIGENCE DATA'}</div>
+    <div class="field-grid">
+      ${rec.mobile ? `<div class="field-item"><div class="field-key">📱 MOBILE NUMBER</div><div class="field-value">${rec.mobile}</div></div>` : ''}
+      ${rec.name ? `<div class="field-item"><div class="field-key">👤 FULL NAME</div><div class="field-value">${rec.name}</div></div>` : ''}
+      ${rec.fname ? `<div class="field-item"><div class="field-key">👨 FATHER'S NAME</div><div class="field-value">${rec.fname}</div></div>` : ''}
+      ${rec.address ? `<div class="field-item"><div class="field-key">📍 ADDRESS</div><div class="field-value">${rec.address}</div></div>` : ''}
+      ${rec.alt ? `<div class="field-item"><div class="field-key">📞 ALTERNATE NUMBER</div><div class="field-value">${rec.alt}</div></div>` : ''}
+      ${rec.circle ? `<div class="field-item"><div class="field-key">📡 OPERATOR</div><div class="field-value">${rec.circle}</div></div>` : ''}
+      ${rec.id ? `<div class="field-item" style="border-left-color: #ff6600;"><div class="field-key">🆔 AADHAAR NUMBER</div><div class="field-value" style="color: #ffaa44; font-weight: bold;">${rec.id}</div></div>` : ''}
+    </div>
+    ${rec.address ? `
+      <div class="map-preview">
+        <div class="field-key">🗺️ GEOLOCATION INTELLIGENCE</div>
+        <div class="field-value">Location: ${rec.address}</div>
+        <a href="${getGoogleMapsLink(rec.address)}" target="_blank" class="map-link">📍 OPEN IN GOOGLE MAPS →</a>
+      </div>
+    ` : ''}
+  `;
+  card.appendChild(subRecord);
+});
     
     const timestamp = document.createElement('div');
     timestamp.style.marginTop = '16px';
@@ -1379,7 +1270,7 @@ async function generatePDF() {
   yPos += 6;
   doc.text(`Date: ${new Date().toLocaleString()}`, 20, yPos);
   yPos += 6;
-  doc.text(`Mode: ${currentMode.toUpperCase()} (Telegram/Phone Converter)`, 20, yPos);
+  doc.text(`Mode: ${currentMode.toUpperCase()} (Auto Deep Scan)`, 20, yPos);
   yPos += 6;
   doc.text(`Total Numbers Scanned: ${totalScans}`, 20, yPos);
   yPos += 6;
@@ -1474,7 +1365,7 @@ document.getElementById('save-session').addEventListener('click', () => {
   const stats = { totalScans, successfulScans, maxChainDepth, totalRecordsFound, totalAlternatesFound };
   const chainInfo = {
     mode: currentMode,
-    initialNumbers: currentResults.map(r => r.number),
+    initialNumbers: getNumbersFromInput(),
     totalScanned: currentResults.length,
     alternatesFound: totalAlternatesFound,
     maxDepth: maxChainDepth,
@@ -1501,7 +1392,7 @@ document.getElementById('clear-history').addEventListener('click', () => {
   }
 });
 document.getElementById('show-history').addEventListener('click', () => {
-  const history = storage.getHistory();
+  const history = storage.getHistoryList();
   const panel = document.getElementById('history-panel');
   const list = document.getElementById('history-list');
   if (history.length === 0) list.innerHTML = '<div style="padding:20px;text-align:center;">No saved sessions</div>';
@@ -1540,9 +1431,294 @@ window.addEventListener('load', () => {
   updateStats();
 });
 
-console.log('%c🔥 TELEGRAM CONVERTER + AUTO DEEP SCAN ACTIVE | Developer Saif 🔥', 'color: #ff6600; font-size: 14px; font-weight: bold;');
-console.log('%c🔗 SUPPORTS: @username | Telegram numeric ID | Phone number', 'color: #ffaa44; font-size: 12px;');
-console.log('%c⚡ CONVERTS TELEGRAM TO PHONE NUMBER FIRST, THEN DEEP SCANS', 'color: #44ff88; font-size: 12px;');
+console.log('%c🔥 AUTO DEEP SCAN ACTIVE | Developer Saif 🔥', 'color: #ff6600; font-size: 14px; font-weight: bold;');
+console.log('%c🔗 BOTH SINGLE AND BATCH MODES AUTOMATICALLY FOLLOW ALTERNATE NUMBERS', 'color: #ffaa44; font-size: 12px;');
+console.log('%c⚡ SCAN ONE NUMBER - GET ENTIRE CONNECTION NETWORK', 'color: #44ff88; font-size: 12px;');
 </script>
+
+<!-- PASSWORD GATEWAY SCRIPT - CHANGE THE API_URL BELOW TO YOUR VERCEL ENDPOINT -->
+<script>
+// Complete Password Gateway for GitHub Pages
+// Connects to Vercel API for secure password verification
+
+const GATEWAY_CONFIG = {
+    // ⚠️ CHANGE THIS TO YOUR VERCEL API URL ⚠️
+    API_URL: 'https://your-app.vercel.app/api/verify',
+    MAX_ATTEMPTS: 5,
+    LOCKOUT_TIME: 900000, // 15 minutes in milliseconds
+    SESSION_KEY: 'osint_auth_verified',
+    ATTEMPT_KEY: 'osint_auth_attempts',
+    LOCKOUT_KEY: 'osint_auth_lockout'
+};
+
+// ========== UTILITY FUNCTIONS ==========
+
+function getStoredAttempts() {
+    const attempts = sessionStorage.getItem(GATEWAY_CONFIG.ATTEMPT_KEY);
+    return attempts ? parseInt(attempts) : 0;
+}
+
+function incrementAttempts() {
+    const current = getStoredAttempts();
+    sessionStorage.setItem(GATEWAY_CONFIG.ATTEMPT_KEY, current + 1);
+    return current + 1;
+}
+
+function resetAttempts() {
+    sessionStorage.removeItem(GATEWAY_CONFIG.ATTEMPT_KEY);
+    sessionStorage.removeItem(GATEWAY_CONFIG.LOCKOUT_KEY);
+}
+
+function isLockedOut() {
+    const lockoutTime = sessionStorage.getItem(GATEWAY_CONFIG.LOCKOUT_KEY);
+    if (!lockoutTime) return false;
+    
+    const timeLeft = parseInt(lockoutTime) - Date.now();
+    if (timeLeft > 0) {
+        return Math.ceil(timeLeft / 60000); // Return minutes left
+    }
+    resetAttempts();
+    return false;
+}
+
+// ========== CORE PASSWORD VERIFICATION ==========
+
+async function verifyPassword(password) {
+    try {
+        const response = await fetch(GATEWAY_CONFIG.API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ password: password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.status === 200 && data.success === true) {
+            return { success: true, message: data.message || 'Access granted' };
+        } else if (response.status === 401) {
+            return { success: false, message: data.message || 'Invalid password' };
+        } else {
+            return { success: false, message: 'Server error. Try again later.' };
+        }
+    } catch (error) {
+        console.error('Verification error:', error);
+        return { success: false, message: 'Cannot connect to authentication server. Check your internet.' };
+    }
+}
+
+// ========== UI COMPONENTS ==========
+
+function createPasswordModal() {
+    // Remove any existing modal
+    const existingModal = document.getElementById('password-modal');
+    if (existingModal) existingModal.remove();
+    
+    const modal = document.createElement('div');
+    modal.id = 'password-modal';
+    modal.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+        ">
+            <div style="
+                background: #0a0a0a;
+                border: 2px solid #00ff00;
+                padding: 40px;
+                border-radius: 10px;
+                text-align: center;
+                max-width: 400px;
+                width: 90%;
+                box-shadow: 0 0 20px rgba(0,255,0,0.3);
+            ">
+                <div style="color: #00ff00; font-size: 20px; margin-bottom: 20px;">
+                    ⚡ SECURE OSINT TERMINAL ⚡
+                </div>
+                <div style="color: #fff; margin-bottom: 20px; font-size: 14px;">
+                    Enter authorization password
+                </div>
+                <input type="password" id="password-input" placeholder="Password" style="
+                    width: 100%;
+                    padding: 12px;
+                    background: #1a1a1a;
+                    border: 1px solid #00ff00;
+                    color: #00ff00;
+                    font-family: 'Courier New', monospace;
+                    font-size: 16px;
+                    margin-bottom: 15px;
+                    box-sizing: border-box;
+                ">
+                <button id="submit-password" style="
+                    background: #00ff00;
+                    color: #000;
+                    border: none;
+                    padding: 10px 30px;
+                    font-family: 'Courier New', monospace;
+                    font-weight: bold;
+                    cursor: pointer;
+                    margin-bottom: 15px;
+                    font-size: 16px;
+                ">VERIFY</button>
+                <div id="gateway-message" style="color: #ff4444; font-size: 12px; min-height: 40px;"></div>
+                <div style="color: #666; font-size: 10px; margin-top: 10px;">
+                    ⚠️ ${GATEWAY_CONFIG.MAX_ATTEMPTS} attempts allowed
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Focus on input
+    const input = document.getElementById('password-input');
+    if (input) input.focus();
+    
+    return modal;
+}
+
+function showAccessDenied() {
+    document.body.innerHTML = `
+        <div style="
+            background: #000;
+            color: #ff0000;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding: 50px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        ">
+            <div style="font-size: 48px; margin-bottom: 20px;">⛔</div>
+            <div style="font-size: 24px; margin-bottom: 10px;">ACCESS DENIED</div>
+            <div style="font-size: 14px; color: #666;">Unauthorized access detected</div>
+            <div style="font-size: 12px; margin-top: 30px; color: #444;">
+                This incident will be reported
+            </div>
+        </div>
+    `;
+}
+
+function updateMessage(text, isError = true) {
+    const msgDiv = document.getElementById('gateway-message');
+    if (msgDiv) {
+        msgDiv.style.color = isError ? '#ff4444' : '#00ff00';
+        msgDiv.innerHTML = text;
+    }
+}
+
+// ========== MAIN AUTHENTICATION FLOW ==========
+
+async function initiateAuthentication() {
+    // Check if already authenticated in this session
+    if (sessionStorage.getItem(GATEWAY_CONFIG.SESSION_KEY) === 'true') {
+        console.log('Already authenticated');
+        const terminalContent = document.getElementById('terminal-content');
+        if (terminalContent) terminalContent.style.display = 'block';
+        return true;
+    }
+    
+    // Check lockout status
+    const lockoutCheck = isLockedOut();
+    if (lockoutCheck !== false) {
+        showAccessDenied();
+        console.log(`Locked out for ${lockoutCheck} minutes`);
+        return false;
+    }
+    
+    // Create and show modal
+    const modal = createPasswordModal();
+    
+    // Handle verification
+    const submitBtn = document.getElementById('submit-password');
+    const passwordInput = document.getElementById('password-input');
+    
+    const attemptVerification = async () => {
+        const password = passwordInput.value.trim();
+        
+        if (!password) {
+            updateMessage('Please enter a password');
+            return;
+        }
+        
+        // Disable button during verification
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.5';
+        updateMessage('Verifying...', false);
+        
+        const result = await verifyPassword(password);
+        
+        if (result.success) {
+            // Authentication successful
+            updateMessage('✓ ACCESS GRANTED', false);
+            resetAttempts();
+            sessionStorage.setItem(GATEWAY_CONFIG.SESSION_KEY, 'true');
+            
+            // Show terminal content
+            const terminalContent = document.getElementById('terminal-content');
+            if (terminalContent) terminalContent.style.display = 'block';
+            
+            // Remove modal after slight delay
+            setTimeout(() => {
+                modal.remove();
+            }, 500);
+        } else {
+            // Authentication failed
+            const attempts = incrementAttempts();
+            const remaining = GATEWAY_CONFIG.MAX_ATTEMPTS - attempts;
+            
+            if (attempts >= GATEWAY_CONFIG.MAX_ATTEMPTS) {
+                // Max attempts reached - lock out
+                const lockoutUntil = Date.now() + GATEWAY_CONFIG.LOCKOUT_TIME;
+                sessionStorage.setItem(GATEWAY_CONFIG.LOCKOUT_KEY, lockoutUntil);
+                updateMessage(`✗ MAX ATTEMPTS EXCEEDED. LOCKED OUT FOR 15 MINUTES`);
+                setTimeout(() => {
+                    showAccessDenied();
+                }, 1500);
+            } else {
+                updateMessage(`✗ ${result.message}. ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining`);
+                passwordInput.value = '';
+                passwordInput.focus();
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+            }
+        }
+    };
+    
+    submitBtn.addEventListener('click', attemptVerification);
+    passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') attemptVerification();
+    });
+    
+    return false; // Not yet authenticated (waiting for user action)
+}
+
+// ========== INITIALIZE ON PAGE LOAD ==========
+
+(async function() {
+    console.log('🔐 Password Gateway v1.0 - Initializing');
+    
+    // Hide terminal content initially
+    const terminalContent = document.getElementById('terminal-content');
+    if (terminalContent) terminalContent.style.display = 'none';
+    
+    await initiateAuthentication();
+})();
+
+// Export for debugging (optional)
+window.gatewayConfig = GATEWAY_CONFIG;
+</script>
+
 </body>
 </html>
