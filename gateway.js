@@ -138,14 +138,16 @@ function clearAttempts() {
 // Note: No client-side measure is foolproof. A determined attacker with
 // source access can patch any of this. The real security is on the server.
 // These measures raise the bar against casual/script-kiddie attacks.
-
 function hardenDevTools() {
-  // 1. Debugger trap — pauses execution when DevTools is open
-  (function devToolsTrap() {
-    try { (function() { }.constructor("debugger")()) } catch (_) {}
-    setTimeout(devToolsTrap, 2000);
-  })();
-
+  const THRESHOLD = 160;
+  setInterval(() => {
+    const widthDiff  = window.outerWidth  - window.innerWidth;
+    const heightDiff = window.outerHeight - window.innerHeight;
+    if (widthDiff > THRESHOLD || heightDiff > THRESHOLD) {
+      lockPage("DevTools detected");
+    }
+  }, 3000); // Check every 3 seconds instead of 1
+}
   // 2. Window size heuristic (docked DevTools)
 
 
@@ -157,14 +159,7 @@ function hardenDevTools() {
     });
   }
 
-  // 4. toString timing trick
-  let devOpen = false;
-  const img = new Image();
-  Object.defineProperty(img, "id", {
-    get() { devOpen = true; return ""; }
-  });
-  setInterval(() => { devOpen = false; console.log(img); if (devOpen) lockPage("DevTools open"); }, 3000);
-}
+
 
 function lockPage(reason) {
   document.documentElement.innerHTML =
