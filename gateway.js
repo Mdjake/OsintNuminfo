@@ -1,37 +1,33 @@
 // ================== SECURITY CONFIG ==================
 // HOW TO SET YOUR PASSWORD:
 //   1. Open browser console on any HTTPS page
-//   2. Run: crypto.subtle.importKey("raw", new TextEncoder().encode("yourpassword"), {name:"PBKDF2"}, false, ["deriveBits"])
-//      then follow the PBKDF2 flow below, OR use the helper at the bottom of this file.
+//   2. Run: generateCredential("yourpassword")
 //   3. Paste the resulting CREDENTIAL object below.
 //
 // NEVER store a plain SHA-256 hash — it's brute-forceable in seconds.
 // PBKDF2 (310,000 iterations) makes each guess take ~1 second on modern hardware.
 
 const CREDENTIAL = {
-  // Generated via generateCredential("yourpassword") — see helper below
-  salt: "772ee2043a0f9699371ed7e2c650ef06",   // 32-char hex salt — CHANGE THIS
-  hash: "87df992fec2c478c94eb5f9f0df3af1c3c49134abf0e2c2aba21fb539f9fe569", // CHANGE THIS — run generateCredential()
+  salt: "772ee2043a0f9699371ed7e2c650ef06",
+  hash: "87df992fec2c478c94eb5f9f0df3af1c3c49134abf0e2c2aba21fb539f9fe569",
 };
 
 const MAX_ATTEMPTS   = 5;
-const LOCK_DURATION  = 15 * 60 * 1000; // 15 min
-const MAX_PW_LENGTH  = 128;            // Prevent oversized input DoS
-const PBKDF2_ITERS   = 310_000;        // NIST SP 800-132 recommended minimum
-const TOKEN_TTL      = 8 * 60 * 60 * 1000; // Auth token expires after 8 hours
+const LOCK_DURATION  = 15 * 60 * 1000;
+const MAX_PW_LENGTH  = 128;
+const PBKDF2_ITERS   = 310_000;
+const TOKEN_TTL      = 8 * 60 * 60 * 1000;
 
-// Session keys — use full names; base64 "obfuscation" provides zero security
 const SK_TOKEN    = "auth_token";
 const SK_ATTEMPTS = "auth_attempts";
 const SK_LOCK     = "auth_lock_until";
 
 // ================== CRYPTO ==================
 
-/** Derive PBKDF2 key bits from a password + hex salt */
 async function deriveKey(password, saltHex) {
-  const enc      = new TextEncoder();
-  const salt     = hexToBytes(saltHex);
-  const keyMat   = await crypto.subtle.importKey(
+  const enc    = new TextEncoder();
+  const salt   = hexToBytes(saltHex);
+  const keyMat = await crypto.subtle.importKey(
     "raw", enc.encode(password), { name: "PBKDF2" }, false, ["deriveBits"]
   );
   const bits = await crypto.subtle.deriveBits(
@@ -41,10 +37,8 @@ async function deriveKey(password, saltHex) {
   return bytesToHex(new Uint8Array(bits));
 }
 
-/** Timing-safe string comparison — prevents timing attacks */
 function timingSafeEqual(a, b) {
   if (a.length !== b.length) {
-    // Still iterate to avoid length-based timing leak
     let diff = 0;
     for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ 0;
     return false;
@@ -56,14 +50,12 @@ function timingSafeEqual(a, b) {
   return diff === 0;
 }
 
-/** Generate a random hex string (for salts / HMAC keys) */
 function randomHex(bytes = 16) {
   return bytesToHex(crypto.getRandomValues(new Uint8Array(bytes)));
 }
 
-/** Sign a payload with HMAC-SHA256 using a session-scoped key */
 async function hmacSign(key, data) {
-  const enc     = new TextEncoder();
+  const enc       = new TextEncoder();
   const cryptoKey = await crypto.subtle.importKey(
     "raw", enc.encode(key), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
   );
@@ -76,14 +68,14 @@ function hexToBytes(hex) {
   for (let i = 0; i < hex.length; i += 2) out[i / 2] = parseInt(hex.slice(i, i + 2), 16);
   return out;
 }
+
 function bytesToHex(bytes) {
   return Array.from(bytes).map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
 // ================== TOKEN MANAGEMENT ==================
-// Auth token = HMAC("session_key:expiry") so it can't be forged or replayed
 
-let SESSION_KEY = null; // Generated once per page load — not stored anywhere
+let SESSION_KEY = null;
 
 function getSessionKey() {
   if (!SESSION_KEY) SESSION_KEY = randomHex(32);
@@ -103,8 +95,8 @@ async function verifyToken() {
     if (!raw) return false;
     const { expiry, sig } = JSON.parse(raw);
     if (Date.now() > expiry) { sessionStorage.removeItem(SK_TOKEN); return false; }
-    const payload   = `${getSessionKey()}:${expiry}`;
-    const expected  = await hmacSign(getSessionKey(), payload);
+    const payload  = `${getSessionKey()}:${expiry}`;
+    const expected = await hmacSign(getSessionKey(), payload);
     return timingSafeEqual(sig, expected);
   } catch { return false; }
 }
@@ -134,42 +126,15 @@ function clearAttempts() {
   sessionStorage.removeItem(SK_ATTEMPTS);
 }
 
-// ================== DEVTOOLS HARDENING ==================
-// Note: No client-side measure is foolproof. A determined attacker with
-// source access can patch any of this. The real security is on the server.
-// These measures raise the bar against casual/script-kiddie attacks.
-function hardenDevTools() {
-  const THRESHOLD = 160;
-  setInterval(() => {
-    const widthDiff  = window.outerWidth  - window.innerWidth;
-    const heightDiff = window.outerHeight - window.innerHeight;
-    if (widthDiff > THRESHOLD || heightDiff > THRESHOLD) {
-      lockPage("DevTools detected");
-    }
-  }, 3000); // Check every 3 seconds instead of 1
-}
-  // 2. Window size heuristic (docked DevTools)
+// ================== LOCK PAGE ==================
 
-
-  // 3. Console timing detection
-  const d = Object.getOwnPropertyDescriptor(console, "log");
-  if (d && d.configurable) {
-    Object.defineProperty(console, "log", {
-      get() { lockPage("Console access detected"); return function() {}; }
-    });
-  }
-
-
-
-function lockPage(reason) {
+function lockPage() {
   document.documentElement.innerHTML =
     `<body style="background:#000;color:#ff4444;font-family:monospace;display:flex;align-items:center;justify-content:center;height:100vh;margin:0">` +
     `<p style="font-size:1.2rem">⛔ SESSION TERMINATED</p></body>`;
 }
 
-// ================== CSP INJECTION ==================
-// Adds a Content Security Policy to block XSS and data exfiltration.
-// For real security, set this as an HTTP response header on your server.
+// ================== CSP ==================
 
 function injectCSP() {
   const meta = document.createElement("meta");
@@ -247,36 +212,31 @@ function createAuthModal() {
 
 async function startAuth() {
   injectCSP();
-  hardenDevTools();
 
   const content = document.getElementById("terminal-content");
   if (content) content.style.display = "none";
 
-  // Check lockout first (before any DOM or crypto work)
   const lock = getLockState();
   if (lock.locked) { renderLocked(lock.until); return; }
 
-  // Verify existing session token
   if (await verifyToken()) {
     if (content) content.style.display = "block";
     return;
   }
 
-  // Show auth modal
-  const modal  = createAuthModal();
-  const input  = document.getElementById("pw-input");
-  const btn    = document.getElementById("pw-submit");
-  const msg    = document.getElementById("pw-msg");
+  const modal = createAuthModal();
+  const input = document.getElementById("pw-input");
+  const btn   = document.getElementById("pw-submit");
+  const msg   = document.getElementById("pw-msg");
 
   input.focus();
 
-  let busy = false; // Prevent double-submit
+  let busy = false;
 
   async function attempt() {
     if (busy) return;
     const val = input.value;
 
-    // Input validation
     if (!val || val.length === 0) { msg.textContent = "Please enter your password."; return; }
     if (val.length > MAX_PW_LENGTH) { msg.textContent = "Input too long."; return; }
 
@@ -286,7 +246,6 @@ async function startAuth() {
     input.value = "";
 
     try {
-      // Re-check lockout in case it triggered during a slow derivation
       const currentLock = getLockState();
       if (currentLock.locked) { renderLocked(currentLock.until); return; }
 
@@ -298,8 +257,8 @@ async function startAuth() {
         modal.remove();
         if (content) content.style.display = "block";
       } else {
-        const tries    = recordFailedAttempt();
-        const newLock  = getLockState();
+        const tries   = recordFailedAttempt();
+        const newLock = getLockState();
         if (newLock.locked) {
           renderLocked(newLock.until);
         } else {
@@ -322,8 +281,8 @@ async function startAuth() {
 }
 
 // ================== CREDENTIAL GENERATOR (DEV ONLY) ==================
-// Run this in console to generate your CREDENTIAL object, then remove it from production.
-// Usage: generateCredential("your-secret-password")
+// Run generateCredential("yourpassword") in console, paste output into CREDENTIAL above.
+// DELETE this function before going live.
 
 async function generateCredential(password) {
   const salt    = randomHex(16);
